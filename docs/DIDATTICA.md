@@ -76,12 +76,20 @@ Per questo la griglia qui sotto usa il gioco come **una** delle fonti, insieme a
 
 ### Griglia di valutazione
 
-| Livello | Voto indicativo | Nel gioco | Osservazione e prova |
+Voti **da 3 a 10**. Il voto nasce da due parti: quello che lo studente ha fatto nel gioco e quello che si osserva in classe o nella prova finale.
+
+| Voto | Livello | Nel gioco (pianeti liberati e stelle su 54) | Osservazione e prova |
 |---|---|---|---|
-| **Avanzato** | 9-10 | 6 pianeti liberati, almeno 45 stelle su 54, nessuna soluzione guardata | Spiega il proprio codice, lo modifica da solo e usa il Laboratorio per provare idee nuove |
-| **Intermedio** | 7-8 | Almeno 5 pianeti, almeno 34 stelle | Legge gli errori e li corregge da solo nella maggior parte dei casi |
-| **Base** | 6 | Almeno 3 pianeti (fino a Calcolus) | Risolve con suggerimenti e sa spiegare cosa fa un programma semplice |
-| **In via di prima acquisizione** | 4-5 | Meno di 3 pianeti, oppure molte soluzioni guardate | Ha bisogno di una guida costante |
+| **10** | Avanzato | 6 pianeti, almeno 50 stelle, nessuna soluzione guardata | Spiega il proprio codice con sicurezza, lo modifica e crea programmi suoi nel Laboratorio |
+| **9** | Avanzato | 6 pianeti, almeno 45 stelle | Spiega il proprio codice e corregge gli errori da solo |
+| **8** | Intermedio | 6 pianeti, almeno 38 stelle | Legge i messaggi di errore e quasi sempre corregge da solo |
+| **7** | Intermedio | Almeno 5 pianeti, almeno 30 stelle | Risolve i problemi con qualche suggerimento e sa dire cosa fa il codice |
+| **6** | Base | Almeno 4 pianeti (fino a Inputera), almeno 20 stelle | Risolve i problemi più semplici con suggerimenti e capisce `print`, variabili e `input` |
+| **5** | In via di prima acquisizione | 3 pianeti (fino a Calcolus) | Ha bisogno spesso dell'aiuto del docente o della soluzione |
+| **4** | In via di prima acquisizione | 1 o 2 pianeti | Ha bisogno di una guida costante e fatica a leggere il codice |
+| **3** | Non raggiunto | Nessun pianeta liberato | Non ha svolto il lavoro, oppure non partecipa |
+
+**Come usarla:** parti dalla colonna "Nel gioco" e sposta il voto di un punto in più o in meno in base all'osservazione. Per esempio, 6 pianeti ma copiati dal compagno fanno scendere il voto, mentre pochi pianeti con un ragionamento chiaro lo fanno salire.
 
 Le soglie sono indicative: adattale alla classe e al tempo che hai dato.
 
@@ -104,6 +112,8 @@ Su carta o nel Laboratorio, 15-20 minuti:
 | Scrivere il codice (input, conversione, if/else, output) | 4 |
 | Trovare l'errore | 2 |
 | **Totale** | **10** |
+
+Il voto della prova è il punteggio, **con un minimo di 3**: per esempio 7 punti = 7, 2 punti = 3.
 
 ### Autovalutazione dello studente
 

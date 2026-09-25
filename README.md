@@ -1,6 +1,6 @@
 # Missione Python
 
-Un gioco per imparare le basi di Python, pensato per la scuola secondaria di primo grado.
+Un **gioco interattivo** per imparare le basi di Python, pensato per la scuola secondaria di primo grado.
 
 Il robot **Pyto** si è schiantato con il suo razzo e i pezzi sono sparsi su **6 pianeti**. Su ogni pianeta ci sono **3 problemi**, cioè 2 esercizi di codice e 1 quiz. Chi li risolve tutti libera il pianeta e recupera un pezzo del razzo. Quando tutti i pezzi sono recuperati, il razzo riparte e lo studente riceve un diploma.
 
@@ -64,10 +64,11 @@ Dal sito di GitHub: **Add file → Upload files**, carica il nuovo `index.html` 
 
 - **Scuola:** Istituto Comprensivo di Almese
 - **Anno scolastico:** 2026/2027
-- **Progetto e contenuti:** i docenti dell'IC Almese
+- **Autrici:** Lidia M. e Anna
+- **Tipo di risorsa:** gioco interattivo
 - **Realizzazione:** con l'aiuto di Claude (Anthropic)
 - **Interprete Python:** [Skulpt](https://skulpt.org)
 
 ## Licenza
 
-[CC BY-SA 4.0](LICENSE.md): puoi riusare e modificare il gioco citando l'Istituto Comprensivo di Almese e condividendo le modifiche con la stessa licenza.
+[CC BY-SA 4.0](LICENSE.md): puoi riusare e modificare il gioco citando le autrici (Lidia M. e Anna, IC Almese) e condividendo le modifiche con la stessa licenza.
