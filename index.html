@@ -1,5 +1,12 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Missione Python: aiuta il robot Pyto a recuperare i pezzi del razzo risolvendo problemi di Python su 6 pianeti.">
 <title>Missione Python</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='15' fill='%234B8BF5'/%3E%3Cellipse cx='20' cy='21' rx='21' ry='6' fill='none' stroke='%23FFD43B' stroke-width='3' transform='rotate(-18 20 20)'/%3E%3C/svg%3E">
+<style>[hidden]:not([hidden=until-found i]){display:none!important} img{max-width:100%} body{margin:0}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Lilita+One&family=Nunito:wght@400;600;800;900&display=swap">
@@ -316,6 +323,8 @@ pre.code{margin:0; background:var(--code-bg); color:var(--code-ink); border:1.5p
   *, *::before, *::after{animation:none !important; transition:none !important}
 }
 </style>
+</head>
+<body>
 
 <canvas id="stars" aria-hidden="true"></canvas>
 
@@ -1566,7 +1575,7 @@ const registro = (() => {
   function unavailable(){
     available = false;
     $("#reg-me").hidden = true; $("#reg-tools").hidden = true; $("#reg-summary").innerHTML = "";
-    $("#reg-list").innerHTML = `<p class="reg-empty">Il registro della classe funziona quando il gioco è aperto dal link di Claude con l'account della scuola.<br>Qui i progressi restano salvati solo su questo computer.</p>`;
+    $("#reg-list").innerHTML = `<p class="reg-empty">Il registro condiviso della classe è disponibile solo nella versione del gioco aperta su Claude con l'account della scuola.<br>Qui i progressi restano salvati su questo computer.</p>`;
     $("#reg-note").textContent = "";
   }
 
@@ -1690,5 +1699,5 @@ $("#reset-btn").onclick = () => {
 
 renderMap();
 </script>
-
-</body></html>
+</body>
+</html>
