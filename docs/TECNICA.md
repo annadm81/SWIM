@@ -55,7 +55,7 @@ Ogni pianeta in `LEVELS` ha questa forma:
   solution:`…` }
 ```
 
-- L'output viene confrontato **dopo aver tolto gli spazi alla fine delle righe**.
+- Il confronto dell'output è tollerante: **non conta maiuscole e minuscole**, gli spazi doppi valgono come uno solo e gli spazi o le righe vuote alla fine non contano.
 - `tests` viene eseguito solo nella prima prova, dopo il codice dello studente.
 - Ogni esecuzione si ferma dopo **4 secondi**, così un ciclo infinito non blocca la pagina.
 
