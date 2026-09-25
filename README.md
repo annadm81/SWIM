@@ -27,12 +27,14 @@ Il codice Python viene eseguito **nel browser** con [Skulpt](https://skulpt.org)
 - [Contenuti didattici](docs/CONTENUTI.md): i 6 pianeti e i 18 problemi, con obiettivi e soluzioni
 - [Documentazione tecnica](docs/TECNICA.md): come è fatto il codice e come si aggiunge o si modifica un problema
 - [Storia delle versioni](docs/VERSIONI.md): le versioni in `versioni/` e le differenze tra una e l'altra
+- [Traguardi, obiettivi e valutazione](docs/DIDATTICA.md): il collegamento con le Indicazioni nazionali, una griglia di valutazione e una prova finale
 
 ## Struttura del repository
 
 ```
 index.html        il gioco (versione attuale, 6 pianeti)
 README.md         questo file
+LICENSE.md        la licenza (CC BY-SA 4.0)
 docs/             la documentazione
 versioni/         tutte le versioni precedenti, così come sono state scaricate dalla chat
 ```
@@ -57,3 +59,15 @@ versioni/         tutte le versioni precedenti, così come sono state scaricate 
 ## Aggiornare il gioco
 
 Dal sito di GitHub: **Add file → Upload files**, carica il nuovo `index.html` (con esattamente questo nome) e premi **Commit changes**. GitHub Pages si aggiorna da solo in un paio di minuti.
+
+## Crediti
+
+- **Scuola:** Istituto Comprensivo di Almese
+- **Anno scolastico:** 2026/2027
+- **Progetto e contenuti:** i docenti dell'IC Almese
+- **Realizzazione:** con l'aiuto di Claude (Anthropic)
+- **Interprete Python:** [Skulpt](https://skulpt.org)
+
+## Licenza
+
+[CC BY-SA 4.0](LICENSE.md): puoi riusare e modificare il gioco citando l'Istituto Comprensivo di Almese e condividendo le modifiche con la stessa licenza.
