@@ -1,6 +1,6 @@
 # Licenza
 
-**Missione Python**, gioco interattivo © 2026 Lidia M. e Anna, Istituto Comprensivo di Almese
+**Missione Python**, gioco interattivo © 2026 Lidia M. e Anna, Istituto Natta di Rivoli
 
 Il gioco e la documentazione sono distribuiti con licenza **Creative Commons Attribuzione - Condividi allo stesso modo 4.0 Internazionale (CC BY-SA 4.0)**.
 
@@ -15,7 +15,7 @@ Testo completo: https://creativecommons.org/licenses/by-sa/4.0/deed.it
 
 **Alle condizioni che:**
 
-- **citi le autrici**, indicando "Lidia M. e Anna, Istituto Comprensivo di Almese", e metti un link a questa licenza, segnalando se hai fatto modifiche;
+- **citi le autrici**, indicando "Lidia M. e Anna, Istituto Natta di Rivoli", e metti un link a questa licenza, segnalando se hai fatto modifiche;
 - **condividi allo stesso modo**, cioè distribuisci le tue versioni modificate con la stessa licenza.
 
 ## Componenti di terze parti

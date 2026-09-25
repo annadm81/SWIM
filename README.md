@@ -62,7 +62,7 @@ Dal sito di GitHub: **Add file → Upload files**, carica il nuovo `index.html` 
 
 ## Crediti
 
-- **Scuola:** Istituto Comprensivo di Almese
+- **Scuola:** Istituto Natta di Rivoli
 - **Anno scolastico:** 2026/2027
 - **Autrici:** Lidia M. e Anna
 - **Tipo di risorsa:** gioco interattivo
@@ -71,4 +71,4 @@ Dal sito di GitHub: **Add file → Upload files**, carica il nuovo `index.html` 
 
 ## Licenza
 
-[CC BY-SA 4.0](LICENSE.md): puoi riusare e modificare il gioco citando le autrici (Lidia M. e Anna, IC Almese) e condividendo le modifiche con la stessa licenza.
+[CC BY-SA 4.0](LICENSE.md): puoi riusare e modificare il gioco citando le autrici (Lidia M. e Anna, Istituto Natta di Rivoli) e condividendo le modifiche con la stessa licenza.
