@@ -1,0 +1,1694 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Missione Python</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Lilita+One&family=Nunito:wght@400;600;800;900&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --space:#0B0D2A; --space-2:#121640; --panel:#191E50; --panel-2:#222965; --line:#343C85;
+  --ink:#EEF0FF; --ink-2:#A9AEDB; --blue:#4B8BF5; --blue-ink:#FFFFFF; --yellow:#FFD43B; --yellow-ink:#1D1600;
+  --pink:#FF7EB6; --cyan:#7FF3FF;
+  --ok:#4ADE9B; --ok-bg:rgba(74,222,155,.13); --err:#FF7A7A; --err-bg:rgba(255,122,122,.13);
+  --code-bg:#0D1135; --code-ink:#E6E9FF; --sel:rgba(127,178,255,.28);
+  --t-k:#FF8FC8; --t-s:#8BF0B0; --t-n:#FFC27A; --t-c:#7C83BF; --t-b:#7FB2FF; --t-f:#D4A8FF;
+  --f-display:"Lilita One", "Arial Rounded MT Bold", "Segoe UI Black", system-ui, sans-serif;
+  --f-body:"Nunito", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, "Courier New", monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--space)}
+body{
+  background:radial-gradient(900px 600px at 85% -10%, rgba(255,126,182,.16), transparent 60%),
+             radial-gradient(800px 700px at -10% 30%, rgba(75,139,245,.18), transparent 60%),
+             radial-gradient(700px 500px at 60% 110%, rgba(127,243,255,.10), transparent 60%), var(--space);
+  background-attachment:fixed;
+  color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.55;
+  padding-inline:16px; padding-block:0 48px; min-height:100%;
+}
+#stars{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none}
+.wrap{position:relative; z-index:1; max-width:1200px; margin:0 auto}
+h1,h2,h3{font-family:var(--f-display); font-weight:400; line-height:1.1; text-wrap:balance; margin:0; letter-spacing:.01em}
+p{margin:0}
+code, kbd, pre{font-family:var(--f-mono)}
+:focus-visible{outline:3px solid var(--yellow); outline-offset:3px}
+button{font:inherit; color:inherit; cursor:pointer}
+
+/* ---------- header ---------- */
+.top{display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; padding-block:16px 12px}
+.brand{display:flex; align-items:center; gap:10px; background:none; border:0; padding:0}
+.brand h1{font-size:30px; color:var(--yellow); text-shadow:0 3px 0 #B8860B, 0 6px 18px rgba(255,212,59,.35)}
+.brand .logo{width:38px; height:38px}
+.nav{display:flex; gap:6px}
+.nav button{background:transparent; border:2px solid transparent; border-radius:999px; padding:5px 14px; font-weight:800; color:var(--ink-2)}
+.nav button[aria-current="page"]{border-color:var(--line); background:var(--panel); color:var(--ink)}
+.stats{margin-left:auto; display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; background:rgba(25,30,80,.75); border:1.5px solid var(--line); border-radius:16px; padding:8px 14px; backdrop-filter:blur(6px)}
+.name-field{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--ink-2); font-weight:700}
+.name-field input{font:inherit; font-weight:800; font-size:15px; color:var(--ink); background:var(--space-2); border:1.5px solid var(--line); border-radius:8px; padding:3px 8px; width:8.5em}
+.name-field input:focus{outline:none; border-color:var(--yellow)}
+.rank{font-size:12px; text-transform:uppercase; letter-spacing:.08em; font-weight:900; background:linear-gradient(90deg, var(--pink), var(--blue)); color:#fff; padding:3px 10px; border-radius:999px}
+.xp{display:grid; gap:3px; min-width:140px}
+.xp-row{display:flex; justify-content:space-between; gap:8px; font-size:12px; color:var(--ink-2); font-weight:700; font-variant-numeric:tabular-nums}
+.xp-bar{height:10px; border-radius:6px; overflow:hidden; background:var(--space-2); border:1px solid var(--line)}
+.xp-bar i{display:block; height:100%; background:linear-gradient(90deg, var(--yellow), #FFB03B); border-radius:6px; transition:width .8s cubic-bezier(.2,.9,.3,1)}
+.pill{display:inline-flex; align-items:center; gap:5px; font-weight:900; font-variant-numeric:tabular-nums; font-size:15px}
+.pill.star{color:var(--yellow)} .pill.part{color:var(--cyan)}
+.pill svg{width:18px; height:18px}
+
+/* ---------- Pyto ---------- */
+.pyto{display:inline-block; flex:none}
+.pyto svg{display:block; width:100%; height:auto; overflow:visible}
+.pyto .bot{animation:float 3.2s ease-in-out infinite; transform-origin:60px 120px}
+@keyframes float{50%{transform:translateY(-6px)}}
+.pyto .ant-ball{animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{fill:#FF7EB6}}
+.pyto .eye-happy, .pyto .m-frown, .pyto .m-flat, .pyto .m-o{display:none}
+.pyto.happy .eye-open{display:none} .pyto.happy .eye-happy{display:inline}
+.pyto.happy .bot{animation:hop .6s ease 2}
+@keyframes hop{40%{transform:translateY(-16px) rotate(-4deg)}70%{transform:translateY(0) rotate(3deg)}}
+.pyto.sad .m-smile{display:none} .pyto.sad .m-frown{display:inline}
+.pyto.sad .bot{animation:shake .5s ease 1}
+@keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.pyto.think .m-smile{display:none} .pyto.think .m-o{display:inline}
+.pyto.think .eye-open{transform:translateY(-2px)}
+
+.bubble{position:relative; background:var(--ink); color:var(--space); border-radius:16px; padding:12px 16px; font-weight:700; font-size:15.5px; line-height:1.45}
+.bubble::before{content:""; position:absolute; left:-10px; top:22px; border:10px solid transparent; border-right-color:var(--ink); border-left:0}
+.bubble b{color:#3A2BB0}
+.bubble code{background:rgba(11,13,42,.1); padding:1px 5px; border-radius:4px; font-size:.9em}
+
+/* ---------- map ---------- */
+.hero{display:flex; align-items:center; gap:18px; padding-block:18px 8px; flex-wrap:wrap}
+.hero .pyto{width:110px}
+.hero-text{flex:1; min-width:260px; display:grid; gap:12px}
+.hero .bubble{max-width:62ch}
+.hero-actions{display:flex; flex-wrap:wrap; gap:10px}
+.map-title{display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; margin-top:18px}
+.map-title h2{font-size:26px}
+.map-title p{color:var(--ink-2); font-weight:700; font-size:14px}
+.starmap{position:relative; margin-top:6px; border-radius:24px; background:rgba(18,22,64,.45); border:1.5px solid rgba(52,60,133,.7)}
+.starmap svg.route{position:absolute; inset:0; pointer-events:none}
+.route .seg{fill:none; stroke-width:4; stroke-linecap:round}
+.route .seg.todo{stroke:rgba(169,174,219,.35); stroke-dasharray:2 12}
+.route .seg.done{stroke:var(--yellow); filter:drop-shadow(0 0 6px rgba(255,212,59,.6))}
+.pl{position:absolute; transform:translate(-50%, -50%); display:grid; justify-items:center; gap:3px; background:none; border:0; padding:0; width:150px; text-align:center}
+.pl:disabled{cursor:not-allowed}
+.planet{position:relative; width:86px; height:86px; border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.55), transparent 22%), radial-gradient(circle at 35% 35%, var(--c1), var(--c2) 72%);
+  box-shadow:inset -12px -14px 0 rgba(0,0,0,.22), 0 10px 30px -10px var(--c2);
+  transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.planet::before{content:""; position:absolute; inset:0; border-radius:50%;
+  background:radial-gradient(circle at 64% 60%, rgba(0,0,0,.18) 0 8%, transparent 9%), radial-gradient(circle at 42% 70%, rgba(0,0,0,.14) 0 5%, transparent 6%), radial-gradient(circle at 70% 34%, rgba(0,0,0,.12) 0 4%, transparent 5%)}
+.planet.ring::after{content:""; position:absolute; left:-22px; right:-22px; top:34px; height:20px; border:4px solid rgba(255,255,255,.55); border-radius:50%; transform:rotate(-16deg); border-top-color:transparent}
+.planet .num{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--f-display); font-size:30px; color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.35)}
+.pl.boss .planet{width:104px; height:104px}
+.pl:not(:disabled):hover .planet{transform:scale(1.08) rotate(-6deg)}
+.pl.locked .planet{filter:grayscale(1) brightness(.45)}
+.pl.locked .num{font-size:22px}
+.pl.done .planet{box-shadow:inset -12px -14px 0 rgba(0,0,0,.22), 0 0 0 4px rgba(255,212,59,.9), 0 0 30px 4px rgba(255,212,59,.35)}
+.pl.current .planet{animation:halo 2s ease-in-out infinite}
+@keyframes halo{0%,100%{box-shadow:inset -12px -14px 0 rgba(0,0,0,.22), 0 0 0 4px rgba(127,243,255,.7), 0 0 0 12px rgba(127,243,255,.12)}50%{box-shadow:inset -12px -14px 0 rgba(0,0,0,.22), 0 0 0 4px rgba(127,243,255,.9), 0 0 0 20px rgba(127,243,255,.06)}}
+.pl .p-name{font-family:var(--f-display); font-size:19px; margin-top:6px; line-height:1}
+.pl .p-topic{font-size:12.5px; color:var(--ink-2); font-weight:700; line-height:1.2}
+.pl.locked .p-name{color:var(--ink-2)}
+.pips{display:flex; gap:4px; margin-top:2px}
+.pips i{width:9px; height:9px; border-radius:50%; background:rgba(169,174,219,.3)}
+.pips i.on{background:var(--yellow); box-shadow:0 0 6px rgba(255,212,59,.7)}
+.rocket-mark{position:absolute; width:44px; height:44px; transform:translate(-50%, -100%); pointer-events:none; animation:bob 1.8s ease-in-out infinite; filter:drop-shadow(0 4px 8px rgba(0,0,0,.4))}
+@keyframes bob{50%{transform:translate(-50%, calc(-100% - 8px))}}
+.banner{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; background:linear-gradient(90deg, var(--yellow), #FFB03B); color:var(--yellow-ink); border-radius:16px; padding:14px 18px; margin-top:16px; font-weight:900}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; border:2px solid var(--line); background:var(--panel-2); color:var(--ink); padding:9px 18px; border-radius:12px; font-weight:900; font-size:15px; line-height:1.2; box-shadow:0 4px 0 rgba(0,0,0,.35); transition:transform .1s ease, box-shadow .1s ease}
+.btn:hover:not(:disabled){transform:translateY(-2px); box-shadow:0 6px 0 rgba(0,0,0,.35)}
+.btn:active:not(:disabled){transform:translateY(3px); box-shadow:0 1px 0 rgba(0,0,0,.35)}
+.btn.primary{background:var(--yellow); border-color:var(--yellow); color:var(--yellow-ink); box-shadow:0 4px 0 #B8860B}
+.btn.primary:hover:not(:disabled){box-shadow:0 6px 0 #B8860B}
+.btn.blue{background:var(--blue); border-color:var(--blue); color:var(--blue-ink); box-shadow:0 4px 0 #2C5DB8}
+.btn.ghost{border-color:transparent; background:transparent; color:var(--ink-2); box-shadow:none; padding-inline:10px}
+.btn.ghost:hover:not(:disabled){color:var(--ink); box-shadow:none}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.btn .k{font-family:var(--f-mono); font-size:11px; font-weight:400; opacity:.75}
+
+/* ---------- level ---------- */
+.lvl-bar{display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; padding-block:14px}
+.lvl-planet{display:flex; align-items:center; gap:12px}
+.lvl-planet .planet{width:48px; height:48px}
+.lvl-planet .planet.ring::after{left:-12px; right:-12px; top:19px; height:11px; border-width:3px}
+.lvl-planet h2{font-size:26px}
+.lvl-planet p{font-size:13px; color:var(--ink-2); font-weight:700}
+.probs{margin-left:auto; display:flex; gap:8px; align-items:center}
+.probs .lab{font-size:12px; font-weight:800; color:var(--ink-2); text-transform:uppercase; letter-spacing:.08em}
+.prob{display:grid; place-items:center; min-width:74px; padding:6px 10px; border-radius:12px; border:2px solid var(--line); background:var(--panel); line-height:1.1}
+.prob .n{font-family:var(--f-display); font-size:17px}
+.prob .s{font-size:11px; color:var(--ink-2); letter-spacing:1px}
+.prob .s .on{color:var(--yellow)}
+.prob[aria-current="step"]{border-color:var(--cyan); background:var(--panel-2); box-shadow:0 0 0 3px rgba(127,243,255,.18)}
+.prob.done{border-color:rgba(255,212,59,.7)}
+.prob:disabled{opacity:.45; cursor:not-allowed}
+.level-grid{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:20px; align-items:start}
+.sheet{background:rgba(25,30,80,.88); border:1.5px solid var(--line); border-radius:20px; padding:20px; display:grid; gap:16px; backdrop-filter:blur(6px)}
+.talk{display:flex; gap:14px; align-items:flex-start}
+.talk .pyto{width:78px}
+.talk .bubble{flex:1}
+.sheet h3{font-size:24px}
+.sheet h3 .kind{display:inline-block; font-family:var(--f-body); font-weight:900; font-size:11px; text-transform:uppercase; letter-spacing:.1em; vertical-align:middle; padding:3px 9px; border-radius:999px; margin-left:6px; background:var(--panel-2); color:var(--cyan); border:1px solid var(--line)}
+.label{font-size:12px; text-transform:uppercase; letter-spacing:.1em; font-weight:900; color:var(--ink-2)}
+.concept{display:grid; gap:8px}
+.concept p code, .task code, .explain code, .results code, .hintbox code{background:rgba(127,178,255,.14); padding:1px 5px; border-radius:4px; font-size:.9em}
+pre.code{margin:0; background:var(--code-bg); color:var(--code-ink); border:1.5px solid var(--line); border-radius:12px; padding:12px 14px; font-size:14px; line-height:22px; overflow-x:auto; tab-size:4}
+.task{background:linear-gradient(135deg, rgba(255,212,59,.18), rgba(255,126,182,.12)); border:1.5px solid rgba(255,212,59,.45); border-radius:14px; padding:14px 16px; display:grid; gap:6px}
+.task .label{color:var(--yellow)}
+.task kbd{font-family:var(--f-mono); background:var(--code-bg); border:1.5px solid var(--line); border-radius:6px; padding:1px 7px; font-size:.9em; white-space:pre-wrap}
+.hintbox{border:1.5px dashed var(--line); border-radius:14px; padding:12px 14px; display:grid; gap:8px}
+.hintbox .row{display:flex; flex-wrap:wrap; gap:8px}
+.hintbox .note{color:var(--ink-2); font-size:14px}
+
+.workbench{display:grid; gap:12px}
+.term{border-radius:18px; overflow:hidden; border:2px solid var(--line); background:var(--code-bg); box-shadow:0 20px 40px -24px rgba(0,0,0,.8)}
+.term-head{display:flex; align-items:center; gap:8px; padding:8px 12px; background:var(--panel-2); border-bottom:1.5px solid var(--line); font-size:12.5px; font-weight:800; color:var(--ink-2)}
+.term-head .dots{display:flex; gap:6px}
+.term-head .dots i{width:11px; height:11px; border-radius:50%}
+.term-head .dots i:nth-child(1){background:#FF7A7A}.term-head .dots i:nth-child(2){background:var(--yellow)}.term-head .dots i:nth-child(3){background:var(--ok)}
+.term-head span.file{margin-left:6px; font-family:var(--f-mono)}
+.ed{display:flex; height:320px}
+.ed-gutter{flex:none; width:42px; padding:12px 8px 12px 0; text-align:right; font-family:var(--f-mono); font-size:14px; line-height:22px; color:var(--ink-2); opacity:.55; overflow:hidden; user-select:none; border-right:1.5px solid var(--line)}
+.ed-body{position:relative; flex:1; min-width:0}
+.ed-body textarea, .ed-body pre{position:absolute; inset:0; margin:0; border:0; padding:12px 14px; font-family:var(--f-mono); font-size:14px; line-height:22px; white-space:pre; tab-size:4; letter-spacing:0; word-spacing:0}
+.ed-body pre{pointer-events:none; overflow:hidden; color:var(--code-ink)}
+.ed-body pre code{display:block; font:inherit}
+.ed-body textarea{resize:none; background:transparent; color:transparent; caret-color:var(--yellow); overflow:auto; outline:none; -webkit-text-fill-color:transparent}
+.ed-body textarea::selection{background:var(--sel); -webkit-text-fill-color:transparent}
+.term:focus-within{border-color:var(--blue); box-shadow:0 0 0 4px rgba(75,139,245,.25), 0 20px 40px -24px rgba(0,0,0,.8)}
+.tk-k{color:var(--t-k); font-weight:600}.tk-s{color:var(--t-s)}.tk-n{color:var(--t-n)}.tk-c{color:var(--t-c); font-style:italic}.tk-b{color:var(--t-b)}.tk-f{color:var(--t-f)}
+.toolbar{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.toolbar .spacer{flex:1}
+.stdin{display:grid; gap:4px}
+.stdin label{font-size:13px; color:var(--ink-2); font-weight:700}
+.stdin textarea{font-family:var(--f-mono); font-size:14px; line-height:20px; background:var(--code-bg); color:var(--code-ink); border:1.5px solid var(--line); border-radius:10px; padding:8px 12px; resize:vertical; min-height:44px}
+.console{background:#060820; color:#D8DCFF; border-radius:14px; border:1.5px solid var(--line); padding:12px 14px; font-family:var(--f-mono); font-size:14px; line-height:21px; min-height:100px; max-height:260px; overflow:auto; white-space:pre-wrap; word-break:break-word}
+.console .muted{opacity:.55}
+.console .in{color:var(--yellow); font-weight:600}
+.console .error{color:var(--err)}
+.results{display:grid; gap:8px}
+.res{display:grid; grid-template-columns:auto 1fr; gap:4px 10px; align-items:start; border-radius:12px; padding:10px 12px; font-size:15px}
+.res.ok{background:var(--ok-bg)} .res.bad{background:var(--err-bg)}
+.res .ic{font-weight:900; font-size:16px}
+.res.ok .ic{color:var(--ok)} .res.bad .ic{color:var(--err)}
+.res .more{grid-column:2; font-size:14px; color:var(--ink-2)}
+.res .diff{grid-column:2; font-family:var(--f-mono); font-size:13px; display:grid; gap:2px}
+
+/* quiz */
+.quiz{display:grid; gap:10px}
+.opt{display:flex; align-items:center; gap:14px; width:100%; text-align:left; background:var(--panel); border:2px solid var(--line); border-radius:14px; padding:14px 16px; font-family:var(--f-mono); font-size:16px; box-shadow:0 4px 0 rgba(0,0,0,.35); transition:transform .1s}
+.opt .letter{display:grid; place-items:center; width:32px; height:32px; border-radius:10px; background:var(--panel-2); font-family:var(--f-display); font-size:16px; flex:none; color:var(--cyan)}
+.opt:hover:not(:disabled){transform:translateY(-2px); border-color:var(--blue)}
+.opt.wrong{border-color:var(--err); background:var(--err-bg); text-decoration:line-through; text-decoration-color:var(--err); animation:shake .4s}
+.opt.right{border-color:var(--ok); background:var(--ok-bg)}
+.opt.right .letter{background:var(--ok); color:var(--space)}
+.opt:disabled{cursor:default}
+.explain{background:rgba(25,30,80,.88); border:1.5px solid var(--line); border-radius:14px; padding:14px 16px; display:grid; gap:8px; margin-top:12px}
+
+/* lab */
+.lab-head{padding-block:20px 16px; display:flex; gap:16px; align-items:center; flex-wrap:wrap}
+.lab-head .pyto{width:80px}
+.lab-head h2{font-size:34px}
+.lab-head p{color:var(--ink-2); max-width:62ch}
+.lab-grid{display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:20px; align-items:start}
+.snips{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+.snips button{border:1.5px solid var(--line); background:var(--panel); border-radius:999px; padding:4px 12px; font-size:13px; font-weight:700}
+.snips button:hover{border-color:var(--yellow)}
+
+/* modal */
+.overlay{position:fixed; inset:0; background:rgba(5,6,24,.72); display:grid; place-items:center; padding:16px; z-index:50; backdrop-filter:blur(3px)}
+#confetti{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:60}
+.modal{position:relative; background:linear-gradient(180deg, var(--panel-2), var(--panel)); color:var(--ink); border:2px solid var(--line); border-radius:24px; padding:26px 24px 22px; width:min(460px, 100%); text-align:center; display:grid; gap:10px; justify-items:center; box-shadow:0 30px 80px -20px rgba(0,0,0,.8); animation:pop .45s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop{from{transform:scale(.7) translateY(20px); opacity:0}}
+.modal .pyto{width:100px; margin-top:-70px}
+.modal h2{font-size:34px; color:var(--yellow); text-shadow:0 3px 0 #B8860B}
+.big-stars{font-size:42px; letter-spacing:6px; color:rgba(169,174,219,.3); line-height:1}
+.big-stars .on{color:var(--yellow); display:inline-block; animation:starIn .55s both; text-shadow:0 0 18px rgba(255,212,59,.6)}
+.big-stars .on:nth-child(2){animation-delay:.18s}.big-stars .on:nth-child(3){animation-delay:.36s}
+@keyframes starIn{from{transform:scale(0) rotate(-120deg)}}
+.modal .gain{font-family:var(--f-display); font-size:24px; color:var(--cyan)}
+.modal p{color:var(--ink-2); font-weight:700}
+.part-reward{display:flex; align-items:center; gap:12px; background:rgba(127,243,255,.1); border:1.5px solid rgba(127,243,255,.4); border-radius:14px; padding:10px 14px; text-align:left; font-weight:800}
+.part-reward svg{width:44px; height:44px; flex:none}
+.modal .row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:6px}
+
+/* diploma */
+.launch{position:relative; height:260px; margin-top:12px; overflow:hidden; border-radius:24px; background:linear-gradient(180deg, rgba(18,22,64,.2), rgba(75,139,245,.15))}
+.launch .ship{position:absolute; left:50%; bottom:10px; width:90px; transform:translateX(-50%); animation:liftoff 3.5s cubic-bezier(.5,0,.8,.4) .6s forwards}
+.launch .flame{transform-origin:50% 0; animation:flick .12s infinite alternate}
+@keyframes flick{to{transform:scaleY(1.3)}}
+@keyframes liftoff{0%{transform:translateX(-50%)}10%{transform:translateX(calc(-50% - 2px))}20%{transform:translateX(calc(-50% + 2px))}100%{transform:translate(-50%, -420px)}}
+.launch .ground{position:absolute; left:0; right:0; bottom:0; height:14px; background:linear-gradient(90deg, #6B4DE6, #FF7EB6)}
+.diploma{margin:18px auto 0; max-width:720px; background:linear-gradient(180deg, var(--panel-2), var(--panel)); border:2px solid rgba(255,212,59,.6); border-radius:24px; padding:34px 26px; text-align:center; display:grid; gap:12px; box-shadow:0 0 60px -20px rgba(255,212,59,.5)}
+.diploma .eyebrow{font-weight:900; text-transform:uppercase; letter-spacing:.14em; color:var(--cyan); font-size:13px}
+.diploma h2{font-size:clamp(28px, 5vw, 44px); color:var(--yellow)}
+.diploma .who{font-family:var(--f-display); font-size:clamp(34px, 6vw, 52px); border-bottom:2px dashed var(--line); padding-bottom:6px; justify-self:center; min-width:60%}
+.diploma .facts{display:flex; flex-wrap:wrap; justify-content:center; gap:10px 28px; color:var(--ink-2); font-weight:700; font-variant-numeric:tabular-nums}
+.diploma .facts b{color:var(--ink); font-family:var(--f-display); font-size:26px; display:block; font-weight:400}
+
+/* sound toggle */
+.sound-btn{display:inline-grid; place-items:center; width:34px; height:34px; border-radius:10px; border:1.5px solid var(--line); background:var(--space-2); padding:0}
+.sound-btn svg{width:18px; height:18px}
+.sound-btn[aria-pressed="false"]{opacity:.6}
+
+/* registro */
+.reg-head{padding-block:20px 14px; display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end; justify-content:space-between}
+.reg-head h2{font-size:34px}
+.reg-head p{color:var(--ink-2); max-width:62ch; font-weight:600}
+.reg-me{display:flex; flex-wrap:wrap; gap:10px 14px; align-items:flex-end; background:rgba(25,30,80,.88); border:1.5px solid var(--line); border-radius:16px; padding:12px 14px}
+.reg-me label{display:grid; gap:3px; font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-2)}
+.reg-me input, .reg-tools select{font:inherit; font-size:15px; font-weight:800; text-transform:none; letter-spacing:0; color:var(--ink); background:var(--space-2); border:1.5px solid var(--line); border-radius:8px; padding:5px 9px}
+.reg-me input{width:11em} .reg-me input#reg-class{width:6em}
+.reg-me input:focus, .reg-tools select:focus{outline:none; border-color:var(--yellow)}
+.reg-me .saved{font-size:13px; color:var(--ok); font-weight:800; min-height:1.2em}
+.reg-tools{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin-bottom:12px; color:var(--ink-2); font-weight:700; font-size:14px}
+.reg-summary{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px}
+.reg-summary div{background:rgba(25,30,80,.88); border:1.5px solid var(--line); border-radius:14px; padding:10px 16px; min-width:130px}
+.reg-summary b{display:block; font-family:var(--f-display); font-weight:400; font-size:28px; line-height:1.1; font-variant-numeric:tabular-nums}
+.reg-summary span{font-size:12.5px; color:var(--ink-2); font-weight:800}
+.reg-table-wrap{overflow-x:auto; background:rgba(25,30,80,.88); border:1.5px solid var(--line); border-radius:18px}
+.reg-table{width:100%; border-collapse:collapse; min-width:720px; font-variant-numeric:tabular-nums}
+.reg-table th{text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-2); font-weight:900; padding:12px 14px; border-bottom:1.5px solid var(--line)}
+.reg-table td{padding:10px 14px; border-bottom:1px solid rgba(52,60,133,.6); font-weight:700; vertical-align:middle}
+.reg-table tr:last-child td{border-bottom:0}
+.reg-table tr.me td{background:rgba(255,212,59,.08)}
+.reg-table .pos{font-family:var(--f-display); font-size:20px; color:var(--ink-2); width:48px}
+.reg-table tr:nth-child(1) .pos{color:var(--yellow)}
+.reg-table .who{display:flex; align-items:center; gap:10px}
+.reg-table .who img{width:28px; height:28px; border-radius:50%; flex:none}
+.reg-table .you{font-size:11px; font-weight:900; background:var(--yellow); color:var(--yellow-ink); border-radius:999px; padding:1px 8px; margin-left:6px}
+.reg-table .cls{color:var(--ink-2)}
+.planet-dots{display:flex; gap:4px}
+.planet-dots i{width:12px; height:12px; border-radius:50%; background:rgba(169,174,219,.2)}
+.planet-dots i.part{background:rgba(127,243,255,.45)}
+.planet-dots i.on{background:var(--c); box-shadow:0 0 6px var(--c)}
+.reg-table .when{color:var(--ink-2); font-size:13.5px; white-space:nowrap}
+.reg-table .del{font-size:13px; padding:4px 10px}
+.reg-empty{padding:26px; text-align:center; color:var(--ink-2); font-weight:700}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+.reg-note{margin-top:12px; color:var(--ink-2); font-size:13.5px; font-weight:600}
+
+/* footer */
+.foot{margin-top:36px; padding-top:14px; border-top:1.5px solid var(--line); display:flex; flex-wrap:wrap; gap:10px 20px; align-items:center; color:var(--ink-2); font-size:14px; font-weight:600}
+.switch{display:flex; align-items:center; gap:8px}
+.switch input{width:18px; height:18px; accent-color:var(--yellow)}
+.foot .spacer{flex:1}
+.status-dot{display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--line); margin-right:6px}
+.status-dot.ready{background:var(--ok); box-shadow:0 0 8px var(--ok)} .status-dot.fail{background:var(--err)}
+
+@media (max-width:900px){
+  .level-grid, .lab-grid{grid-template-columns:minmax(0,1fr)}
+  .stats{margin-left:0}
+  .probs{margin-left:0}
+}
+@media (max-width:520px){
+  .brand h1{font-size:25px}
+  .sheet{padding:16px}
+  .ed{height:270px}
+  .talk .pyto{width:60px}
+  .prob{min-width:64px}
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{animation:none !important; transition:none !important}
+}
+</style>
+
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <header class="top">
+    <button class="brand" id="go-home" aria-label="Torna alla mappa stellare">
+      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="#4B8BF5"/><ellipse cx="20" cy="21" rx="21" ry="6" fill="none" stroke="#FFD43B" stroke-width="3" transform="rotate(-18 20 20)"/><circle cx="14" cy="15" r="3" fill="#fff" opacity=".6"/></svg>
+      <h1>Missione Python</h1>
+    </button>
+    <nav class="nav" aria-label="Sezioni">
+      <button id="nav-map" aria-current="page">Mappa stellare</button>
+      <button id="nav-lab">Laboratorio</button>
+      <button id="nav-reg">Registro della classe</button>
+    </nav>
+    <div class="stats">
+      <label class="name-field" for="player-name">Pilota <input id="player-name" type="text" maxlength="24" placeholder="il tuo nome" autocomplete="off"></label>
+      <span class="rank" id="rank">Cadetto</span>
+      <div class="xp" aria-label="Punti esperienza">
+        <div class="xp-row"><span id="xp-text">0 XP</span><span id="xp-next"></span></div>
+        <div class="xp-bar"><i id="xp-fill" style="width:0%"></i></div>
+      </div>
+      <span class="pill star" id="star-count" title="Stelle raccolte">★ 0</span>
+      <span class="pill part" id="part-count" title="Pezzi del razzo recuperati"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 2.5 4.5 6 4.5 10l-2 3h-5l-2-3C7.5 8 9 4.5 12 2z" fill="currentColor"/><circle cx="12" cy="9" r="2" fill="#0B0D2A"/><path d="M9.5 15l-3 3 1-4.5M14.5 15l3 3-1-4.5" fill="currentColor"/></svg><span>0/6</span></span>
+      <button class="sound-btn" id="sound-btn" aria-pressed="true" aria-label="Suoni attivi: clicca per disattivarli" title="Suoni"></button>
+    </div>
+  </header>
+
+  <!-- MAP -->
+  <main id="view-map">
+    <section class="hero">
+      <span class="pyto" id="hero-pyto"></span>
+      <div class="hero-text">
+        <p class="bubble" id="hero-bubble">Bip! Sono <b>Pyto</b>. Il mio razzo si è schiantato e i pezzi sono sparsi su 6 pianeti. Su ogni pianeta ci sono <b>3 problemi di Python</b>: risolvili tutti e recupero un pezzo. Mi aiuti a tornare a casa?</p>
+        <div class="hero-actions">
+          <button class="btn primary" id="continue-btn">Parti dal pianeta 1 →</button>
+          <button class="btn" id="hero-lab">Apri il laboratorio</button>
+        </div>
+      </div>
+    </section>
+    <div id="banner-slot"></div>
+    <div class="map-title"><h2>Mappa stellare</h2><p>★★★ al primo colpo e senza aiuti · i quiz si risolvono senza eseguire il codice</p></div>
+    <div class="starmap" id="starmap"></div>
+  </main>
+
+  <!-- LEVEL -->
+  <main id="view-level" hidden>
+    <div class="lvl-bar">
+      <button class="btn ghost" id="back-map">← Mappa</button>
+      <div class="lvl-planet"><span class="planet" id="lvl-planet"></span><div><h2 id="lvl-name"></h2><p id="lvl-topic"></p></div></div>
+      <div class="probs" id="probs" aria-label="Problemi del pianeta"></div>
+    </div>
+    <div class="level-grid">
+      <article class="sheet" id="sheet"></article>
+      <section id="work"></section>
+    </div>
+  </main>
+
+  <!-- LAB -->
+  <main id="view-lab" hidden>
+    <div class="lab-head">
+      <span class="pyto think" id="lab-pyto"></span>
+      <div><h2>Laboratorio</h2><p>Qui non ci sono stelle né punti: prova idee, sperimenta, sbaglia. Se il programma usa <code>input()</code>, scrivi le risposte nel riquadro «Input», una per riga.</p></div>
+    </div>
+    <div class="lab-grid">
+      <div class="workbench">
+        <div class="term"><div class="term-head"><span class="dots"><i></i><i></i><i></i></span><span class="file">laboratorio.py</span></div><div id="lab-editor"></div></div>
+        <div class="toolbar">
+          <button class="btn primary" id="lab-run">▶ Esegui <span class="k">Ctrl+Invio</span></button>
+          <button class="btn ghost" id="lab-clear">Pulisci editor</button>
+        </div>
+        <div class="snips" aria-label="Esempi pronti">
+          <span class="label">Esempi:</span>
+          <button data-snip="tab">Tabellina</button>
+          <button data-snip="dado">Lancia il dado</button>
+          <button data-snip="stringhe">Giochi con le stringhe</button>
+          <button data-snip="dizionario">Rubrica</button>
+        </div>
+      </div>
+      <div class="workbench">
+        <div class="stdin"><label for="lab-stdin">Input (una risposta per riga)</label><textarea id="lab-stdin" rows="3" spellcheck="false"></textarea></div>
+        <div class="console" id="lab-console" aria-live="polite"><span class="muted">L'output del programma apparirà qui.</span></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- REGISTRO -->
+  <main id="view-reg" hidden>
+    <div class="reg-head">
+      <div><h2>Registro della classe</h2><p>Ogni pilota compare qui con i pianeti liberati, le stelle e i punti. L'elenco si aggiorna da solo quando qualcuno risolve un problema.</p></div>
+      <div class="reg-me" id="reg-me">
+        <label for="reg-name">Nome e cognome<input id="reg-name" type="text" maxlength="40" autocomplete="off" placeholder="es. Giulia Rossi"></label>
+        <label for="reg-class">Classe<input id="reg-class" type="text" maxlength="8" autocomplete="off" placeholder="es. 3B"></label>
+        <span class="saved" id="reg-saved" aria-live="polite"></span>
+      </div>
+    </div>
+    <div class="reg-tools" id="reg-tools">
+      <label for="reg-filter">Mostra classe <select id="reg-filter"><option value="">Tutte</option></select></label>
+      <label for="reg-sort">Ordina per <select id="reg-sort"><option value="xp">Punti XP</option><option value="stelle">Stelle</option><option value="nome">Nome</option><option value="when">Ultima attività</option></select></label>
+    </div>
+    <div class="reg-summary" id="reg-summary"></div>
+    <div class="reg-table-wrap"><div id="reg-list"><p class="reg-empty">Collegamento al registro…</p></div></div>
+    <p class="reg-note" id="reg-note"></p>
+  </main>
+
+  <!-- DIPLOMA -->
+  <main id="view-diploma" hidden>
+    <div id="launch-slot"></div>
+    <div class="diploma" id="diploma"></div>
+    <div style="display:flex; justify-content:center; margin-top:18px"><button class="btn" id="dip-back">← Torna alla mappa</button></div>
+  </main>
+
+  <footer class="foot">
+    <span><span class="status-dot" id="py-dot"></span><span id="py-status">Caricamento dell'interprete Python…</span></span>
+    <span class="spacer"></span>
+    <label class="switch" for="teacher-mode"><input type="checkbox" id="teacher-mode"> Modalità docente (sblocca pianeti e soluzioni)</label>
+    <button class="btn ghost" id="reset-btn">Azzera progressi</button>
+  </footer>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <span class="pyto happy" id="modal-pyto"></span>
+    <h2 id="modal-title">Ottimo!</h2>
+    <div class="big-stars" id="modal-stars"></div>
+    <div class="gain" id="modal-gain"></div>
+    <div id="modal-part"></div>
+    <p id="modal-msg"></p>
+    <div class="row">
+      <button class="btn" id="modal-stay">Rivedi il codice</button>
+      <button class="btn primary" id="modal-next">Avanti →</button>
+    </div>
+  </div>
+</div>
+<canvas id="confetti" aria-hidden="true" hidden></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+<script>
+/* ======================= CONTENUTI: 6 pianeti × 3 problemi ======================= */
+const LEVELS = [
+{ id:"p1", planet:"Printia", topic:"print e testo", c:["#7FB2FF","#2C4FB8"], ring:false, part:"l'antenna",
+  intro:"Su Printia tutti comunicano con <code>print()</code>. Se imparo a parlare, posso chiamare aiuto!",
+  problems:[
+  { id:"s-ciao", type:"code", xp:100, title:"Ciao, mondo!",
+    story:"Mi sono appena riacceso. Insegnami la mia prima frase!",
+    concept:"<p><code>print()</code> mostra sullo schermo quello che metti tra le parentesi. Il testo va sempre tra virgolette <code>\" \"</code>.</p>",
+    example:`print("Buongiorno!")`,
+    task:"Fai stampare esattamente: <kbd>Ciao, mondo!</kbd>",
+    starter:`# Scrivi qui sotto il tuo codice
+`,
+    runs:[{out:"Ciao, mondo!"}],
+    hint:"Ti basta una riga: <code>print(\"Ciao, mondo!\")</code>. Non dimenticare le virgolette e le parentesi.",
+    solution:`print("Ciao, mondo!")` },
+  { id:"s-q-virgole", type:"quiz", xp:50, title:"Quiz: cosa appare?",
+    story:"Ho provato a presentarmi, ma non so cosa uscirà sullo schermo…",
+    question:"Cosa stampa questo programma?",
+    code:`print("Ciao", "Pyto")`,
+    options:["Ciao Pyto", "CiaoPyto", "\"Ciao\", \"Pyto\"", "Errore"], answer:0,
+    explain:"Se dai a <code>print</code> più testi separati da una virgola, li stampa <b>con uno spazio in mezzo</b>. Le virgolette non vengono stampate." },
+  { id:"s-due-righe", type:"code", xp:100, title:"Due righe",
+    story:"Adesso voglio dire due cose, una sotto l'altra.",
+    concept:"<p>Ogni <code>print()</code> scrive su una <b>riga nuova</b>. Due print = due righe.</p>",
+    example:`print("Prima riga")
+print("Seconda riga")`,
+    task:"Fai stampare due righe: <kbd>Mi chiamo Pyto</kbd> e sotto <kbd>Sono un robot</kbd>",
+    starter:`# due print, una per riga
+`,
+    runs:[{out:"Mi chiamo Pyto\nSono un robot"}],
+    hint:"Scrivi due righe: <code>print(\"Mi chiamo Pyto\")</code> e poi <code>print(\"Sono un robot\")</code>.",
+    solution:`print("Mi chiamo Pyto")
+print("Sono un robot")` },
+  ]},
+
+{ id:"p2", planet:"Variabilon", topic:"variabili", c:["#FF9DCB","#B8338A"], ring:true, part:"il computer di bordo",
+  intro:"Su Variabilon ogni cosa sta in una scatola con un'etichetta. Il mio computer di bordo funziona così!",
+  problems:[
+  { id:"s-nome", type:"code", xp:100, title:"La scatola del nome",
+    story:"Voglio ricordarmi il tuo nome. Per ricordare, un programma usa le variabili.",
+    concept:"<p>Una <b>variabile</b> è una scatola con un nome. Il segno <code>=</code> mette qualcosa dentro la scatola. Poi puoi usare il nome della scatola al posto del contenuto.</p>",
+    example:`animale = "gatto"
+print("Il mio animale è il", animale)`,
+    task:"Nella variabile <code>nome</code> c'è <code>\"Pyto\"</code>. Usando la variabile, stampa: <kbd>Ciao Pyto</kbd>",
+    starter:`nome = "Pyto"
+`,
+    runs:[{out:"Ciao Pyto"}],
+    require:[["print\\([^)]*nome", "Dentro print() usa la variabile nome, senza riscrivere \"Pyto\"."]],
+    hint:"<code>print(\"Ciao\", nome)</code> — la parola <code>nome</code> va scritta <b>senza</b> virgolette.",
+    solution:`nome = "Pyto"
+print("Ciao", nome)` },
+  { id:"s-q-riassegna", type:"quiz", xp:50, title:"Quiz: la scatola cambia",
+    story:"Ho messo un numero nella scatola… e poi l'ho cambiato.",
+    question:"Cosa stampa questo programma?",
+    code:`punti = 5
+punti = punti + 1
+print(punti)`,
+    options:["5", "6", "51", "punti"], answer:1,
+    explain:"Nella scatola c'è 5. La seconda riga prende 5, aggiunge 1 e rimette il risultato nella scatola: ora <code>punti</code> vale <b>6</b>." },
+  { id:"s-anni", type:"code", xp:100, title:"Il compleanno",
+    story:"Oggi è il mio compleanno! Quanti anni avrò?",
+    concept:"<p>Nelle variabili puoi mettere anche i <b>numeri</b> (senza virgolette) e usarli per fare i conti.</p>",
+    example:`gatti = 2
+print(gatti + 3)   # 5`,
+    task:"Nella variabile <code>anni</code> c'è <code>11</code>. Crea la variabile <code>nuovi_anni</code> uguale ad <code>anni + 1</code> e stampala: <kbd>12</kbd>",
+    starter:`anni = 11
+`,
+    runs:[{out:"12"}],
+    tests:`assert nuovi_anni == 12, "La variabile nuovi_anni deve valere 12"`,
+    hint:"<code>nuovi_anni = anni + 1</code> e poi <code>print(nuovi_anni)</code>.",
+    solution:`anni = 11
+nuovi_anni = anni + 1
+print(nuovi_anni)` },
+  ]},
+
+{ id:"p3", planet:"Calcolus", topic:"fare i conti", c:["#FFC27A","#C2531F"], ring:false, part:"il motore",
+  intro:"Calcolus è il pianeta dei matematici. Per riparare il motore devo fare un po' di conti!",
+  problems:[
+  { id:"s-somma", type:"code", xp:100, title:"La calcolatrice",
+    story:"Devo contare i bulloni del motore: sono in due scatole.",
+    concept:"<p>Python sa fare i conti: <code>+</code> più, <code>-</code> meno, <code>*</code> per, <code>/</code> diviso. Il risultato si può mettere in una variabile.</p>",
+    example:`mele = 3
+pere = 4
+frutta = mele + pere
+print(frutta)   # 7`,
+    task:"Con <code>a = 12</code> e <code>b = 5</code>, crea la variabile <code>somma</code> uguale ad <code>a + b</code> e stampa: <kbd>Totale: 17</kbd>",
+    starter:`a = 12
+b = 5
+`,
+    runs:[{out:"Totale: 17"}],
+    tests:`assert somma == 17, "La variabile somma deve valere 17"`,
+    hint:"<code>somma = a + b</code> e poi <code>print(\"Totale:\", somma)</code>.",
+    solution:`a = 12
+b = 5
+somma = a + b
+print("Totale:", somma)` },
+  { id:"s-q-prec", type:"quiz", xp:50, title:"Quiz: chi va prima?",
+    story:"Faccio i conti, ma seguo le regole della matematica. Tu le ricordi?",
+    question:"Cosa stampa questo programma?",
+    code:`print(2 + 3 * 4)`,
+    options:["20", "14", "2 + 3 * 4", "24"], answer:1,
+    explain:"Come in matematica, prima si fa la moltiplicazione: <code>3 * 4 = 12</code>, poi <code>2 + 12 = 14</code>." },
+  { id:"s-caramelle", type:"code", xp:100, title:"Dividere le caramelle",
+    story:"Ho 20 caramelle da dividere tra 4 amici, in parti uguali.",
+    concept:"<p>Per dividere senza la virgola si usa <code>//</code> (divisione intera): <code>9 // 2</code> fa <code>4</code>.</p>",
+    example:`biscotti = 12
+bambini = 3
+print(biscotti // bambini)   # 4`,
+    task:"Con <code>caramelle = 20</code> e <code>amici = 4</code>, calcola <code>ognuno</code> usando <code>//</code> e stampa: <kbd>Ognuno riceve 5 caramelle</kbd>",
+    starter:`caramelle = 20
+amici = 4
+`,
+    runs:[{out:"Ognuno riceve 5 caramelle"}],
+    require:[["//", "Usa la divisione intera // per dividere le caramelle."]],
+    tests:`assert ognuno == 5, "La variabile ognuno deve valere 5"`,
+    hint:"<code>ognuno = caramelle // amici</code> e poi <code>print(\"Ognuno riceve\", ognuno, \"caramelle\")</code>.",
+    solution:`caramelle = 20
+amici = 4
+ognuno = caramelle // amici
+print("Ognuno riceve", ognuno, "caramelle")` },
+  ]},
+
+{ id:"p4", planet:"Inputera", topic:"input: fare domande", c:["#8BF0B0","#1E8A62"], ring:true, part:"il pannello di controllo",
+  intro:"Gli abitanti di Inputera amano fare domande. Per riparare il pannello devo imparare ad ascoltare le risposte!",
+  problems:[
+  { id:"s-saluto", type:"code", xp:100, title:"Come ti chiami?",
+    story:"Voglio conoscerti! Ti faccio una domanda.",
+    concept:"<p><code>input()</code> fa una domanda e aspetta che l'utente scriva la risposta. La risposta si mette in una variabile.</p>",
+    example:`colore = input("Colore preferito? ")
+print("Anche a me piace il", colore)`,
+    task:"Chiedi il nome con <code>input</code> e stampa <kbd>Ciao Luca</kbd> (se l'utente ha scritto Luca). Proveremo con nomi diversi!",
+    starter:`nome = input("Come ti chiami? ")
+`,
+    runs:[{inputs:["Luca"], out:"Ciao Luca"},{inputs:["Sara"], out:"Ciao Sara"}],
+    hint:"Manca solo una riga: <code>print(\"Ciao\", nome)</code>.",
+    solution:`nome = input("Come ti chiami? ")
+print("Ciao", nome)` },
+  { id:"s-q-str", type:"quiz", xp:50, title:"Quiz: testo o numero?",
+    story:"Ho ricevuto due cifre… ma tra virgolette.",
+    question:"Cosa stampa questo programma?",
+    code:`a = "2"
+b = "3"
+print(a + b)`,
+    options:["5", "23", "2 + 3", "Errore"], answer:1,
+    explain:"Con le virgolette, <code>\"2\"</code> e <code>\"3\"</code> sono <b>testo</b>, non numeri. Il <code>+</code> tra due testi li <b>attacca</b>: <code>23</code>." },
+  { id:"s-doppio", type:"code", xp:100, title:"Il doppio",
+    story:"Dammi un numero e io ti dico il suo doppio!",
+    concept:"<p>Quello che arriva da <code>input()</code> è sempre <b>testo</b>. Per fare i conti va trasformato in numero con <code>int()</code>.</p>",
+    example:`x = int(input("Un numero: "))   # l'utente scrive 4
+print(x + 10)                    # 14`,
+    task:"Leggi un numero e stampa il suo doppio così: <kbd>Il doppio è 14</kbd> (se l'utente ha scritto 7).",
+    starter:`numero = int(input("Scrivi un numero: "))
+`,
+    runs:[{inputs:["7"], out:"Il doppio è 14"},{inputs:["10"], out:"Il doppio è 20"}],
+    hint:"<code>print(\"Il doppio è\", numero * 2)</code> — ricorda che <code>*</code> vuol dire «per».",
+    solution:`numero = int(input("Scrivi un numero: "))
+print("Il doppio è", numero * 2)` },
+  ]},
+
+{ id:"p5", planet:"Bivio Prime", topic:"if ed else: scegliere", c:["#D4A8FF","#6B3FD0"], ring:false, part:"il navigatore",
+  intro:"Su Bivio Prime ogni strada si divide in due. Il mio navigatore deve imparare a scegliere!",
+  problems:[
+  { id:"s-grande", type:"code", xp:100, title:"Grande o piccolo?",
+    story:"Devo capire se un numero è grande o piccolo.",
+    concept:"<p><code>if</code> vuol dire «se»: esegue le righe sotto solo se la condizione è vera. <code>else</code> vuol dire «altrimenti». Le righe dentro vanno <b>spostate a destra di 4 spazi</b> e servono i due punti <code>:</code>.</p>",
+    example:`voto = 8
+if voto >= 6:
+    print("Promosso!")
+else:
+    print("Riprova")`,
+    task:"Leggi un numero. Se è <b>maggiore di 10</b> stampa <kbd>Grande</kbd>, altrimenti <kbd>Piccolo</kbd>. Proveremo con 15, 3 e 10.",
+    starter:`numero = int(input("Numero: "))
+`,
+    runs:[{inputs:["15"], out:"Grande"},{inputs:["3"], out:"Piccolo"},{inputs:["10"], out:"Piccolo"}],
+    hint:"<code>if numero &gt; 10:</code> poi, rientrato, <code>print(\"Grande\")</code>. Sotto: <code>else:</code> e, rientrato, <code>print(\"Piccolo\")</code>.",
+    solution:`numero = int(input("Numero: "))
+if numero > 10:
+    print("Grande")
+else:
+    print("Piccolo")` },
+  { id:"s-q-if", type:"quiz", xp:50, title:"Quiz: quale strada?",
+    story:"Sono arrivato a un bivio. Da che parte vado?",
+    question:"Cosa stampa questo programma?",
+    code:`x = 4
+if x > 5:
+    print("Destra")
+else:
+    print("Sinistra")`,
+    options:["Destra", "Sinistra", "Destra e Sinistra", "Niente"], answer:1,
+    explain:"<code>4 &gt; 5</code> è <b>falso</b>, quindi Python salta la riga sotto <code>if</code> ed esegue quella sotto <code>else</code>: <code>Sinistra</code>." },
+  { id:"s-password", type:"code", xp:100, title:"La parola segreta",
+    story:"La porta della mia astronave si apre solo con la parola segreta.",
+    concept:"<p>Per controllare se due cose sono <b>uguali</b> si usano due uguali <code>==</code>. Un uguale solo <code>=</code> serve per mettere un valore in una variabile.</p>",
+    example:`risposta = input("Quanto fa 2 + 2? ")
+if risposta == "4":
+    print("Giusto!")
+else:
+    print("Sbagliato")`,
+    task:"Leggi una parola. Se è <code>pyto</code> stampa <kbd>Porta aperta</kbd>, altrimenti <kbd>Porta chiusa</kbd>.",
+    starter:`parola = input("Parola segreta: ")
+`,
+    runs:[{inputs:["pyto"], out:"Porta aperta"},{inputs:["ciao"], out:"Porta chiusa"}],
+    hint:"<code>if parola == \"pyto\":</code> — la parola segreta va tra virgolette, e servono due uguali <code>==</code>.",
+    solution:`parola = input("Parola segreta: ")
+if parola == "pyto":
+    print("Porta aperta")
+else:
+    print("Porta chiusa")` },
+  ]},
+
+{ id:"p6", planet:"Loopiter", topic:"cicli for · sfida finale", c:["#FFE17A","#C98A00"], ring:true, boss:true, part:"la chiave di accensione",
+  intro:"Ultimo pianeta! Loopiter gira su se stesso in continuazione: qui si impara a ripetere le cose. Recuperiamo la chiave e si torna a casa!",
+  problems:[
+  { id:"s-conta", type:"code", xp:100, title:"Conta fino a 5",
+    story:"Devo contare i pezzi del razzo. Invece di tanti print, uso un ciclo!",
+    concept:"<p>Il ciclo <code>for</code> <b>ripete</b> le righe rientrate. <code>range(1, 6)</code> dà i numeri da 1 a 5: l'ultimo numero (6) è <b>escluso</b>.</p>",
+    example:`for i in range(1, 4):
+    print("Giro", i)
+# Giro 1, Giro 2, Giro 3`,
+    task:"Stampa i numeri da 1 a 5, uno per riga, usando un ciclo <code>for</code>.",
+    starter:`# usa un ciclo for
+`,
+    runs:[{out:"1\n2\n3\n4\n5"}],
+    require:[["\\bfor\\b", "Usa un ciclo for invece di scrivere cinque print."]],
+    hint:"<code>for i in range(1, 6):</code> e sotto, rientrato, <code>print(i)</code>.",
+    solution:`for i in range(1, 6):
+    print(i)` },
+  { id:"s-q-giri", type:"quiz", xp:50, title:"Quiz: quante volte?",
+    story:"Il mio ciclo saluta… ma quante volte?",
+    question:"Quante volte viene stampato «Ciao»?",
+    code:`for i in range(3):
+    print("Ciao")`,
+    options:["2 volte", "3 volte", "4 volte", "1 volta"], answer:1,
+    explain:"<code>range(3)</code> dà i numeri <code>0, 1, 2</code>: sono <b>3</b> numeri, quindi il ciclo fa 3 giri e stampa «Ciao» 3 volte." },
+  { id:"s-tabellina", type:"code", xp:150, title:"Sfida finale: la tabellina",
+    story:"L'ultima prova per la chiave: la tabellina del 5!",
+    concept:"<p>Dentro il ciclo puoi usare la variabile <code>i</code> per fare i conti: a ogni giro <code>i</code> vale 1, poi 2, poi 3…</p>",
+    example:`for i in range(1, 4):
+    print(2, "x", i, "=", 2 * i)
+# 2 x 1 = 2
+# 2 x 2 = 4
+# 2 x 3 = 6`,
+    task:"Con un ciclo stampa la tabellina del 5 da 1 a 10: <kbd>5 x 1 = 5</kbd>, <kbd>5 x 2 = 10</kbd> … fino a <kbd>5 x 10 = 50</kbd>",
+    starter:`# la tabellina del 5
+`,
+    runs:[{out:Array.from({length:10},(_,i)=>`5 x ${i+1} = ${5*(i+1)}`).join("\n")}],
+    require:[["\\bfor\\b", "Usa un ciclo for per generare le righe."]],
+    hint:"<code>for i in range(1, 11):</code> e dentro <code>print(5, \"x\", i, \"=\", 5 * i)</code>.",
+    solution:`for i in range(1, 11):
+    print(5, "x", i, "=", 5 * i)` },
+  ]},
+];
+
+const LEVEL_BONUS = 100;
+const ALL_PROBS = LEVELS.flatMap(l => l.problems);
+const MAX_XP = ALL_PROBS.reduce((s, p) => s + p.xp, 0) + LEVELS.length * LEVEL_BONUS;
+const RANKS = [[0,"Cadetto"],[0.12,"Pilota"],[0.35,"Navigatore"],[0.6,"Comandante"],[0.85,"Ammiraglio Python"]].map(([f, n]) => [Math.round(f * MAX_XP), n]);
+
+const SNIPPETS = {
+  tab:`n = int(input("Quale tabellina? "))
+for i in range(1, 11):
+    print(f"{n} x {i} = {n * i}")`,
+  dado:`import random
+
+lanci = int(input("Quanti lanci? "))
+for i in range(lanci):
+    faccia = random.randint(1, 6)
+    print(f"Lancio {i + 1}: {faccia}")`,
+  stringhe:`frase = input("Scrivi una frase: ")
+print("Maiuscolo:", frase.upper())
+print("Al contrario:", frase[::-1])
+print("Lettere:", len(frase))
+print("Parole:", len(frase.split()))`,
+  dizionario:`rubrica = {"Anna": "333 1234567", "Luca": "347 7654321"}
+rubrica["Sara"] = "320 1112233"
+
+for nome in rubrica:
+    print(nome, "→", rubrica[nome])
+
+chi = input("Chi cerchi? ")
+if chi in rubrica:
+    print("Numero:", rubrica[chi])
+else:
+    print("Non in rubrica")`,
+};
+
+/* ======================= STATO ======================= */
+const KEY = "missione-python-v3";
+let state = { name:"", classe:"", done:{}, levels:{}, code:{}, meta:{}, teacher:false };
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) state = Object.assign(state, s); } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const levelDone = l => l.problems.every(p => state.done[p.id]);
+const levelStars = l => { const s = l.problems.map(p => state.done[p.id]?.stars || 0); return s.every(Boolean) ? Math.round(s.reduce((a, b) => a + b, 0) / s.length) : 0; };
+const probsDone = l => l.problems.filter(p => state.done[p.id]).length;
+function totalXP(){ return Object.values(state.done).reduce((s, d) => s + d.xp, 0) + Object.keys(state.levels).length * LEVEL_BONUS; }
+function totalStars(){ return Object.values(state.done).reduce((s, d) => s + d.stars, 0); }
+function isUnlocked(i){ return state.teacher || i === 0 || levelDone(LEVELS[i-1]) || probsDone(LEVELS[i]) > 0; }
+function probUnlocked(l, k){ return state.teacher || k === 0 || !!state.done[l.problems[k-1].id] || !!state.done[l.problems[k].id]; }
+function currentIndex(){ return LEVELS.findIndex(l => !levelDone(l)); }
+function starsHTML(n, total = 3){ let h = ""; for (let i = 0; i < total; i++) h += i < n ? '<span class="on">★</span>' : "★"; return h; }
+
+/* ======================= GRAFICA: Pyto, razzo, pezzi ======================= */
+function pytoSVG(){
+  return `<svg viewBox="0 0 120 150" aria-hidden="true"><g class="bot">
+    <ellipse cx="60" cy="146" rx="30" ry="4" fill="rgba(0,0,0,.35)"/>
+    <line x1="60" y1="12" x2="60" y2="30" stroke="#A9AEDB" stroke-width="4" stroke-linecap="round"/>
+    <circle class="ant-ball" cx="60" cy="9" r="6" fill="#FFD43B"/>
+    <rect x="16" y="28" width="88" height="66" rx="22" fill="#4B8BF5"/>
+    <rect x="16" y="28" width="88" height="20" rx="10" fill="#fff" opacity=".12"/>
+    <circle cx="14" cy="61" r="7" fill="#2C5DB8"/><circle cx="106" cy="61" r="7" fill="#2C5DB8"/>
+    <rect x="28" y="40" width="64" height="42" rx="14" fill="#0B0D2A"/>
+    <g fill="#7FF3FF"><ellipse class="eye-open" cx="47" cy="58" rx="6" ry="7.5"/><ellipse class="eye-open" cx="73" cy="58" rx="6" ry="7.5"/></g>
+    <g fill="none" stroke="#7FF3FF" stroke-width="4" stroke-linecap="round">
+      <path class="eye-happy" d="M40 60 Q47 50 54 60"/><path class="eye-happy" d="M66 60 Q73 50 80 60"/>
+      <path class="m-smile" d="M51 70 Q60 77 69 70"/><path class="m-frown" d="M51 75 Q60 68 69 75"/>
+    </g>
+    <circle class="m-o" cx="60" cy="72" r="3.5" fill="#7FF3FF"/>
+    <circle cx="36" cy="70" r="4" fill="#FF7EB6" opacity=".55"/><circle cx="84" cy="70" r="4" fill="#FF7EB6" opacity=".55"/>
+    <rect x="46" y="94" width="28" height="8" fill="#2C5DB8"/>
+    <rect x="30" y="100" width="60" height="38" rx="14" fill="#FFD43B"/>
+    <rect x="30" y="100" width="60" height="12" rx="6" fill="#fff" opacity=".25"/>
+    <circle cx="60" cy="119" r="8" fill="#0B0D2A"/><circle cx="60" cy="119" r="4" fill="#FF7EB6"/>
+    <path d="M30 110 Q14 116 16 132" stroke="#FFD43B" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M90 110 Q106 104 108 88" stroke="#FFD43B" stroke-width="7" fill="none" stroke-linecap="round"/>
+  </g></svg>`;
+}
+function setPyto(el, mood){ el.classList.remove("happy","sad","think"); void el.offsetWidth; if (mood) el.classList.add(mood); }
+
+const ROCKET = `<svg viewBox="0 0 64 96" aria-hidden="true">
+  <path class="flame" d="M24 78 Q32 100 40 78 Z" fill="#FFB03B"/><path class="flame" d="M28 78 Q32 92 36 78 Z" fill="#FFE17A"/>
+  <path d="M32 4 C46 16 50 36 48 64 L16 64 C14 36 18 16 32 4 Z" fill="#EEF0FF"/>
+  <path d="M32 4 C40 11 45 20 47 30 L17 30 C19 20 24 11 32 4 Z" fill="#FF7EB6"/>
+  <circle cx="32" cy="42" r="8" fill="#4B8BF5" stroke="#0B0D2A" stroke-width="3"/>
+  <path d="M16 50 L4 70 L16 66 Z M48 50 L60 70 L48 66 Z" fill="#FF7EB6"/>
+  <rect x="20" y="64" width="24" height="14" rx="3" fill="#A9AEDB"/></svg>`;
+
+const PART_ICON = `<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="rgba(127,243,255,.15)" stroke="#7FF3FF" stroke-width="2"/><path d="M24 9 l4 9 10 1-7.5 6.5 2.5 10-9-5.5-9 5.5 2.5-10L10 19l10-1z" fill="#FFD43B"/></svg>`;
+
+function planetStyle(l){ return `--c1:${l.c[0]};--c2:${l.c[1]}`; }
+
+/* ======================= SFONDO STELLATO ======================= */
+(function starfield(){
+  const cv = $("#stars"), ctx = cv.getContext("2d");
+  let stars = [], w, h, dpr;
+  function init(){
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    w = cv.clientWidth; h = cv.clientHeight;
+    cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(w * h / 5000);
+    stars = Array.from({length:n}, () => ({ x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.4 + .3, p:Math.random()*Math.PI*2, s:Math.random()*.02 + .005 }));
+  }
+  function draw(t){
+    ctx.clearRect(0, 0, w, h);
+    for (const s of stars) {
+      const a = reduced ? .7 : .35 + .65 * Math.abs(Math.sin(s.p + t * s.s * .06));
+      ctx.globalAlpha = a; ctx.fillStyle = s.r > 1.3 ? "#FFE9A8" : "#DCE3FF";
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    if (!reduced) requestAnimationFrame(draw);
+  }
+  init(); addEventListener("resize", () => { init(); if (reduced) draw(0); });
+  requestAnimationFrame(draw);
+})();
+
+/* ======================= CORIANDOLI ======================= */
+function confetti(){
+  if (reduced) return;
+  const cv = $("#confetti"), ctx = cv.getContext("2d");
+  cv.hidden = false;
+  const w = cv.width = innerWidth, h = cv.height = innerHeight;
+  const cols = ["#FFD43B","#4B8BF5","#FF7EB6","#7FF3FF","#4ADE9B"];
+  const ps = Array.from({length:160}, () => ({ x:w/2 + (Math.random()-.5)*120, y:h*.45, vx:(Math.random()-.5)*16, vy:-Math.random()*16 - 6, r:Math.random()*Math.PI, vr:(Math.random()-.5)*.3, c:cols[Math.floor(Math.random()*cols.length)], s:Math.random()*6 + 5 }));
+  const t0 = performance.now();
+  (function frame(t){
+    const el = t - t0;
+    ctx.clearRect(0, 0, w, h);
+    for (const p of ps) {
+      p.vy += .45; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.globalAlpha = Math.max(0, 1 - el / 3000);
+      ctx.fillRect(-p.s/2, -p.s/4, p.s, p.s/2); ctx.restore();
+    }
+    if (el < 3000) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, w, h); cv.hidden = true; }
+  })(t0);
+}
+
+/* ======================= EVIDENZIATORE ======================= */
+const KW = new Set("False None True and as assert break class continue def del elif else except finally for from global if import in is lambda nonlocal not or pass raise return try while with yield".split(" "));
+const BI = new Set("print input int float str len range list dict set tuple bool abs min max sum sorted round type isinstance enumerate zip open repr".split(" "));
+const TOK = /(#[^\n]*)|([fFrRbB]?(?:"(?:[^"\\\n]|\\.)*"?|'(?:[^'\\\n]|\\.)*'?))|(\b\d+(?:\.\d+)?\b)|(\b[A-Za-z_]\w*\b)/g;
+function hl(src){
+  let out = "", last = 0, m, prevDef = false;
+  TOK.lastIndex = 0;
+  while ((m = TOK.exec(src))) {
+    out += esc(src.slice(last, m.index));
+    const t = esc(m[0]);
+    if (m[1]) out += `<span class="tk-c">${t}</span>`;
+    else if (m[2]) out += `<span class="tk-s">${t}</span>`;
+    else if (m[3]) out += `<span class="tk-n">${t}</span>`;
+    else if (KW.has(m[0])) { out += `<span class="tk-k">${t}</span>`; prevDef = m[0] === "def"; last = TOK.lastIndex; continue; }
+    else if (prevDef) out += `<span class="tk-f">${t}</span>`;
+    else if (BI.has(m[0])) out += `<span class="tk-b">${t}</span>`;
+    else out += t;
+    prevDef = false;
+    last = TOK.lastIndex;
+  }
+  return out + esc(src.slice(last));
+}
+
+/* ======================= EDITOR ======================= */
+function createEditor(host, id, onRun){
+  host.innerHTML = `<div class="ed"><div class="ed-gutter" aria-hidden="true"><div></div></div><div class="ed-body"><pre aria-hidden="true"><code></code></pre><textarea id="${id}" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Editor di codice Python. Tab per rientrare, Esc per uscire, Ctrl+Invio per eseguire."></textarea></div></div>`;
+  const ta = host.querySelector("textarea"), code = host.querySelector("pre code"), gut = host.querySelector(".ed-gutter div");
+  const listeners = [];
+  function paint(){
+    code.innerHTML = hl(ta.value) + "\n ";
+    const n = ta.value.split("\n").length;
+    let g = ""; for (let i = 1; i <= n; i++) g += i + "\n";
+    gut.textContent = g; gut.style.whiteSpace = "pre";
+    sync();
+  }
+  function sync(){ code.style.transform = `translate(${-ta.scrollLeft}px, ${-ta.scrollTop}px)`; gut.style.transform = `translateY(${-ta.scrollTop}px)`; }
+  function insert(text){
+    ta.focus();
+    if (!document.execCommand || !document.execCommand("insertText", false, text)) {
+      ta.setRangeText(text, ta.selectionStart, ta.selectionEnd, "end");
+      ta.dispatchEvent(new Event("input"));
+    }
+  }
+  ta.addEventListener("input", () => { paint(); listeners.forEach(f => f(ta.value)); });
+  ta.addEventListener("scroll", sync);
+  ta.addEventListener("keydown", e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); onRun && onRun(); return; }
+    if (e.key === "Escape") { ta.blur(); return; }
+    const v = ta.value, s = ta.selectionStart, en = ta.selectionEnd;
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const ls = v.lastIndexOf("\n", s - 1) + 1;
+      if (e.shiftKey || v.slice(s, en).includes("\n")) {
+        const le = v.indexOf("\n", en - (en > s && v[en-1] === "\n" ? 1 : 0)); const end = le === -1 ? v.length : le;
+        const block = v.slice(ls, end);
+        const nb = e.shiftKey ? block.replace(/^ {1,4}/gm, "") : block.replace(/^/gm, "    ");
+        ta.setSelectionRange(ls, end); insert(nb);
+        ta.setSelectionRange(ls, ls + nb.length);
+      } else insert("    ");
+      return;
+    }
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      const ls = v.lastIndexOf("\n", s - 1) + 1;
+      const line = v.slice(ls, s);
+      let ind = line.match(/^ */)[0];
+      if (/:\s*(#.*)?$/.test(line)) ind += "    ";
+      insert("\n" + ind);
+      return;
+    }
+    if (e.key === "Backspace" && s === en && s > 0) {
+      const ls = v.lastIndexOf("\n", s - 1) + 1; const before = v.slice(ls, s);
+      if (before.length && /^ +$/.test(before)) { e.preventDefault(); const k = ((before.length - 1) % 4) + 1; ta.setSelectionRange(s - k, s); insert(""); }
+    }
+  });
+  paint();
+  return {
+    get value(){ return ta.value; },
+    set value(v){ ta.value = v; paint(); ta.scrollTop = 0; },
+    onChange(f){ listeners.push(f); },
+    focus(){ ta.focus(); }
+  };
+}
+
+/* ======================= INTERPRETE ======================= */
+let pyReady = false;
+(function initPy(){
+  const dot = $("#py-dot"), st = $("#py-status");
+  if (typeof Sk !== "undefined" && Sk.builtinFiles) { pyReady = true; dot.classList.add("ready"); st.textContent = "Python pronto (eseguito nel browser)"; }
+  else { dot.classList.add("fail"); st.textContent = "Impossibile caricare l'interprete Python: controlla la connessione e ricarica la pagina."; }
+})();
+function builtinRead(x){
+  if (Sk.builtinFiles === undefined || Sk.builtinFiles.files[x] === undefined) throw "File non trovato: '" + x + "'";
+  return Sk.builtinFiles.files[x];
+}
+const MARK = "<<<__PYTO_TEST__>>>";
+async function runPython(code, inputs = [], tests = ""){
+  const res = { segs:[], out:"", error:null, phase:"student", inputShort:false };
+  if (!pyReady) { res.error = { name:"Errore", msg:"L'interprete Python non è stato caricato.", line:null }; return res; }
+  const q = inputs.slice();
+  let phase = "student";
+  const studentLines = code.split("\n").length;
+  const full = tests ? code + "\nprint('" + MARK + "')\n" + tests : code;
+  Sk.configure({
+    __future__: Sk.python3, read: builtinRead,
+    execLimit: 4000, yieldLimit: 100, killableWhile: true, killableFor: true,
+    inputfunTakesPrompt: true,
+    output: t => {
+      if (phase === "test") return;
+      if (t.indexOf(MARK) !== -1) { phase = "test"; return; }
+      res.out += t; res.segs.push(["out", t]);
+    },
+    inputfun: prompt => {
+      let v = "";
+      if (q.length) v = q.shift(); else res.inputShort = true;
+      if (phase !== "test") { if (prompt) res.segs.push(["out", String(prompt)]); res.segs.push(["in", v + "\n"]); }
+      return v;
+    },
+  });
+  Sk.execStart = Date.now();
+  try { await Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, full, true)); }
+  catch (e) { res.error = parseError(e, studentLines); }
+  res.phase = phase;
+  return res;
+}
+function parseError(e, studentLines){
+  let text = "";
+  try { text = e.toString(); } catch(_) { text = String(e); }
+  const m = text.match(/^(\w+)(?::\s?)?([\s\S]*?)(?:\s+on line (\d+))?\s*$/);
+  let name = m ? m[1] : "Errore", msg = m ? m[2] : text, line = m && m[3] ? +m[3] : null;
+  if (line && line > studentLines) line = null;
+  return { name, msg, line };
+}
+const FRIENDLY = {
+  SyntaxError:"Errore di sintassi: Python non riesce a leggere questa riga. Controlla parentesi e virgolette (aperte = chiuse) e i due punti <code>:</code> dopo if, for, while, def.",
+  IndentationError:"Rientro sbagliato: le righe dentro if/for/while/def vanno spostate a destra di 4 spazi, tutte allo stesso modo. Un blocco non può essere vuoto.",
+  NameError:"Nome sconosciuto: stai usando una variabile o una funzione che non esiste. Controlla come l'hai scritta (maiuscole e minuscole contano) e che l'hai creata prima di usarla. Il testo va tra virgolette.",
+  TypeError:"Tipo sbagliato: stai mescolando tipi diversi, ad esempio testo + numero. Usa <code>int()</code> per trasformare in numero o <code>str()</code> per trasformare in testo.",
+  ValueError:"Valore non valido: ad esempio <code>int(\"ciao\")</code> non può diventare un numero.",
+  ZeroDivisionError:"Divisione per zero: in matematica (e in Python) non si può.",
+  IndexError:"Indice fuori dalla lista: gli indici partono da 0, quindi l'ultimo elemento è <code>len(lista) - 1</code>.",
+  KeyError:"Chiave inesistente nel dizionario.",
+  AttributeError:"Questo tipo di dato non ha il metodo che stai usando: controlla il nome (es. <code>append</code>, <code>upper</code>).",
+  TimeLimitError:"Il programma ci mette troppo: probabilmente è un <b>ciclo infinito</b>. Controlla che la condizione del while prima o poi diventi falsa.",
+  SuspensionError:"Il programma ci mette troppo: probabilmente è un <b>ciclo infinito</b>.",
+};
+const friendly = err => FRIENDLY[err.name] || "Python si è fermato per un errore. Leggi il messaggio e controlla la riga indicata.";
+function renderConsole(el, res, note){
+  let h = "";
+  for (const [k, t] of res.segs) h += k === "in" ? `<span class="in">${esc(t)}</span>` : esc(t);
+  if (res.error && res.phase === "student") h += `<span class="error">${h && !h.endsWith("\n") ? "\n" : ""}${esc(res.error.name)}${res.error.msg ? ": " + esc(res.error.msg) : ""}${res.error.line ? " (riga " + res.error.line + ")" : ""}</span>`;
+  if (!h) h = `<span class="muted">(il programma non ha stampato niente)</span>`;
+  if (note) h = `<span class="muted">${esc(note)}</span>\n` + h;
+  el.innerHTML = h; el.scrollTop = el.scrollHeight;
+}
+function norm(s){ return s.replace(/\r/g, "").split("\n").map(l => l.replace(/\s+/g, " ").trim()).join("\n").replace(/\n+$/, "").trim().toLowerCase(); }
+function firstDiff(got, exp){
+  const g = got.replace(/\r/g, "").replace(/\n+$/, "").split("\n"), e = exp.split("\n");
+  for (let i = 0; i < Math.max(g.length, e.length); i++) {
+    const a = (g[i] ?? ""), b = (e[i] ?? "");
+    if (norm(a) !== norm(b)) return { line:i + 1, got: g[i] === undefined ? "(niente)" : a, exp: e[i] === undefined ? "(niente, riga in più)" : b };
+  }
+  return null;
+}
+
+/* ======================= VISTE ======================= */
+function show(v){
+  ["map","level","lab","diploma","reg"].forEach(n => $("#view-" + n).hidden = n !== v);
+  ["#nav-map","#nav-lab","#nav-reg"].forEach(s => $(s).removeAttribute("aria-current"));
+  $(v === "lab" ? "#nav-lab" : v === "reg" ? "#nav-reg" : "#nav-map").setAttribute("aria-current", "page");
+  window.scrollTo({ top:0 });
+}
+
+function renderHeader(){
+  const xp = totalXP();
+  let rank = RANKS[0][1], next = null;
+  for (let i = 0; i < RANKS.length; i++) if (xp >= RANKS[i][0]) { rank = RANKS[i][1]; next = RANKS[i+1] || null; }
+  $("#rank").textContent = rank;
+  $("#xp-text").textContent = `${xp} XP`;
+  $("#xp-next").textContent = next ? `${next[1]}: ${next[0]}` : `max ${MAX_XP}`;
+  $("#xp-fill").style.width = Math.min(100, Math.round(xp / MAX_XP * 100)) + "%";
+  $("#star-count").textContent = `★ ${totalStars()}/${ALL_PROBS.length * 3}`;
+  $("#part-count span").textContent = `${Object.keys(state.levels).length}/${LEVELS.length}`;
+}
+
+/* ---- mappa ---- */
+$("#hero-pyto").innerHTML = pytoSVG();
+$("#lab-pyto").innerHTML = pytoSVG();
+$("#modal-pyto").innerHTML = pytoSVG();
+
+function renderMap(){
+  renderHeader();
+  const box = $("#starmap");
+  const W = box.clientWidth || 1000;
+  const wide = W >= 760;
+  const pts = LEVELS.map((l, i) => {
+    if (wide) {
+      const row = Math.floor(i / 3); let col = i % 3; if (row === 1) col = 2 - col;
+      const pad = Math.min(160, W * .15);
+      return { x: pad + col * (W - 2 * pad) / 2, y: 120 + row * 250 + (col % 2 ? 36 : -8) };
+    }
+    return { x: W * (i % 2 ? .7 : .3), y: 100 + i * 175 };
+  });
+  const H = wide ? 120 + 250 + 36 + 140 : 100 + (LEVELS.length - 1) * 175 + 130;
+  box.style.height = H + "px";
+  const cur = currentIndex();
+  let segs = "";
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i+1];
+    let d;
+    if (Math.abs(a.x - b.x) < 10) d = `M${a.x} ${a.y} C${a.x + 150} ${a.y} ${b.x + 150} ${b.y} ${b.x} ${b.y}`;
+    else if (wide) { const mx = (a.x + b.x) / 2; d = `M${a.x} ${a.y} C${mx} ${a.y} ${mx} ${b.y} ${b.x} ${b.y}`; }
+    else { const my = (a.y + b.y) / 2; d = `M${a.x} ${a.y} C${a.x} ${my} ${b.x} ${my} ${b.x} ${b.y}`; }
+    segs += `<path class="seg ${levelDone(LEVELS[i]) ? "done" : "todo"}" d="${d}"/>`;
+  }
+  let html = `<svg class="route" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true">${segs}</svg>`;
+  LEVELS.forEach((l, i) => {
+    const open = isUnlocked(i), done = levelDone(l), n = probsDone(l);
+    const cls = ["pl", done ? "done" : "", open ? "" : "locked", i === cur && open ? "current" : "", l.boss ? "boss" : ""].join(" ");
+    const pips = l.problems.map(p => `<i class="${state.done[p.id] ? "on" : ""}"></i>`).join("");
+    html += `<button class="${cls}" style="left:${pts[i].x}px; top:${pts[i].y}px" data-i="${i}" ${open ? "" : "disabled"} aria-label="Pianeta ${i + 1}, ${esc(l.planet)}: ${esc(l.topic)}. ${n} problemi su 3 risolti${open ? "" : ", bloccato"}">
+      <span class="planet ${l.ring ? "ring" : ""}" style="${planetStyle(l)}"><span class="num">${open ? i + 1 : "🔒︎"}</span></span>
+      <span class="p-name">${esc(l.planet)}</span><span class="p-topic">${esc(l.topic)}</span>
+      ${done ? `<span class="stars" style="color:rgba(169,174,219,.3)">${starsHTML(levelStars(l))}</span>` : `<span class="pips">${pips}</span>`}
+    </button>`;
+  });
+  if (cur !== -1) html += `<div class="rocket-mark" style="left:${pts[cur].x + 46}px; top:${pts[cur].y - 30}px">${ROCKET}</div>`;
+  box.innerHTML = html;
+  box.querySelectorAll(".pl").forEach(b => b.addEventListener("click", () => openLevel(+b.dataset.i)));
+  box.querySelectorAll(".stars .on").forEach(s => s.style.color = "var(--yellow)");
+
+  const cb = $("#continue-btn");
+  if (cur === -1) { cb.textContent = "Guarda il decollo →"; cb.onclick = openDiploma; }
+  else { const l = LEVELS[cur]; cb.textContent = cur === 0 && !probsDone(l) ? "Parti dal pianeta 1 →" : `Continua: ${l.planet} →`; cb.onclick = () => openLevel(cur); }
+  const nParts = Object.keys(state.levels).length;
+  $("#hero-bubble").innerHTML = cur === -1
+    ? `Ce l'abbiamo fatta, <b>${esc(state.name || "pilota")}</b>! Il razzo è di nuovo intero. Grazie a te ora so programmare in Python!`
+    : nParts === 0 && !Object.keys(state.done).length
+      ? `Bip! Sono <b>Pyto</b>. Il mio razzo si è schiantato e i pezzi sono sparsi su 6 pianeti. Su ogni pianeta ci sono <b>3 problemi di Python</b>: risolvili tutti e recupero un pezzo. Mi aiuti a tornare a casa?`
+      : `Abbiamo già recuperato <b>${nParts} pezzi su ${LEVELS.length}</b>${state.name ? ", " + esc(state.name) : ""}! Prossima tappa: <b>${esc(LEVELS[cur].planet)}</b>, dove si impara ${esc(LEVELS[cur].topic)}.`;
+  $("#banner-slot").innerHTML = cur === -1 ? `<div class="banner"><span>Missione compiuta! Tutti i 6 pezzi del razzo sono stati recuperati.</span><button class="btn" id="banner-dip">Guarda il decollo</button></div>` : "";
+  const bd = $("#banner-dip"); if (bd) bd.onclick = openDiploma;
+}
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { if (!$("#view-map").hidden) renderMap(); }, 150); });
+
+/* ---- livello ---- */
+let editor = null, curLevel = -1, curProb = 0, running = false;
+
+function openLevel(i, k){
+  if (!isUnlocked(i)) return;
+  sfx.play("warp");
+  curLevel = i;
+  const l = LEVELS[i];
+  if (k === undefined) { k = l.problems.findIndex(p => !state.done[p.id]); if (k === -1) k = 0; }
+  const pl = $("#lvl-planet"); pl.className = "planet" + (l.ring ? " ring" : ""); pl.setAttribute("style", planetStyle(l));
+  $("#lvl-name").textContent = `${i + 1}. ${l.planet}`;
+  $("#lvl-topic").textContent = l.topic;
+  show("level");
+  openProblem(k);
+}
+
+function renderProbTabs(){
+  const l = LEVELS[curLevel], box = $("#probs");
+  box.innerHTML = `<span class="lab">Problemi</span>`;
+  l.problems.forEach((p, k) => {
+    const d = state.done[p.id], open = probUnlocked(l, k);
+    const b = document.createElement("button");
+    b.className = "prob" + (d ? " done" : "");
+    b.disabled = !open;
+    if (k === curProb) b.setAttribute("aria-current", "step");
+    b.setAttribute("aria-label", `Problema ${k + 1}: ${p.title}${d ? `, risolto con ${d.stars} stelle` : open ? "" : ", bloccato"}`);
+    b.innerHTML = `<span class="n">${open ? (p.type === "quiz" ? "Quiz" : "Prob. " + (k + 1)) : "🔒︎"}</span><span class="s">${d ? starsHTML(d.stars) : p.type === "quiz" ? "?" : "…"}</span>`;
+    b.onclick = () => openProblem(k);
+    box.appendChild(b);
+  });
+}
+
+function openProblem(k){
+  const l = LEVELS[curLevel];
+  if (!probUnlocked(l, k)) return;
+  curProb = k;
+  const p = l.problems[k];
+  const meta = state.meta[p.id] || (state.meta[p.id] = { fails:0, hint:false, sol:false, wrong:[] });
+  const done = state.done[p.id];
+  renderProbTabs();
+  const sheet = $("#sheet"), work = $("#work");
+  const intro = k === 0 && !done ? `${l.intro}<br><br>${esc(p.story)}` : esc(p.story);
+  const talk = `<div class="talk"><span class="pyto" id="sheet-pyto">${pytoSVG()}</span><p class="bubble" id="bubble">${intro}</p></div>`;
+
+  if (p.type === "quiz") {
+    sheet.innerHTML = `${talk}
+      <h3>${esc(p.title)}<span class="kind">quiz lampo</span></h3>
+      <div class="concept"><span class="label">Domanda</span><p><b>${p.question}</b></p><pre class="code">${hl(p.code)}</pre></div>
+      <p style="color:var(--ink-2);font-size:14px">Ragiona senza eseguire: è quello che fa un programmatore quando legge il codice di altri. Ogni errore costa una stella.</p>`;
+    work.innerHTML = `<div class="quiz" id="quiz"></div><div id="quiz-explain"></div>`;
+    const qz = $("#quiz");
+    p.options.forEach((o, j) => {
+      const b = document.createElement("button");
+      b.className = "opt"; b.innerHTML = `<span class="letter">${"ABCD"[j]}</span><span>${esc(o)}</span>`;
+      if (meta.wrong.includes(j) && !done) { b.classList.add("wrong"); b.disabled = true; }
+      b.addEventListener("click", () => answerQuiz(j));
+      qz.appendChild(b);
+    });
+    if (done) revealQuiz(false);
+  } else {
+    sheet.innerHTML = `${talk}
+      <h3>${esc(p.title)}<span class="kind">${p.id === "s-tabellina" ? "sfida finale" : "codice"}</span></h3>
+      <div class="concept"><span class="label">Cosa imparerai</span>${p.concept}<pre class="code">${hl(p.example)}</pre></div>
+      <div class="task"><span class="label">La tua missione</span><div>${p.task}</div></div>
+      <div class="hintbox" id="hintbox"></div>`;
+    const usesInput = (p.runs || []).some(r => r.inputs && r.inputs.length);
+    work.innerHTML = `
+      <div class="workbench">
+        <div class="term"><div class="term-head"><span class="dots"><i></i><i></i><i></i></span><span class="file">${esc(p.id)}.py</span></div><div id="editor-host"></div></div>
+        <div class="toolbar">
+          <button class="btn blue" id="run-btn">▶ Esegui <span class="k">Ctrl+Invio</span></button>
+          <button class="btn primary" id="submit-btn">✓ Consegna</button>
+          <span class="spacer"></span>
+          <button class="btn ghost" id="reset-code">Ricomincia</button>
+        </div>
+        ${usesInput ? `<div class="stdin"><label for="stdin">Input simulato: cosa scriverebbe l'utente (una risposta per riga). Usato da «Esegui».</label><textarea id="stdin" rows="2" spellcheck="false">${esc(p.runs[0].inputs.join("\n"))}</textarea></div>` : ""}
+        <div class="console" id="console" aria-live="polite"><span class="muted">Premi «Esegui» per provare il programma, «Consegna» quando pensi che sia giusto.</span></div>
+        <div class="results" id="results" aria-live="polite"></div>
+      </div>`;
+    editor = createEditor($("#editor-host"), "code-" + p.id, () => runOnly());
+    editor.value = state.code[p.id] ?? p.starter;
+    let t; editor.onChange(v => { clearTimeout(t); t = setTimeout(() => { state.code[p.id] = v; save(); }, 300); });
+    $("#run-btn").onclick = runOnly;
+    $("#submit-btn").onclick = submit;
+    $("#reset-code").onclick = () => { editor.value = p.starter; state.code[p.id] = p.starter; save(); $("#results").innerHTML = ""; };
+    renderHint();
+  }
+}
+
+function say(html, mood){
+  const b = $("#bubble"), py = $("#sheet-pyto");
+  if (b) b.innerHTML = html;
+  if (py) setPyto(py, mood);
+}
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+function renderHint(){
+  const p = LEVELS[curLevel].problems[curProb], meta = state.meta[p.id], box = $("#hintbox");
+  if (!box) return;
+  const canSol = state.teacher || meta.fails >= 3 || state.done[p.id];
+  let h = `<span class="label">Aiuti</span>`;
+  if (meta.hint) h += `<div><b>Suggerimento:</b> ${p.hint}</div>`;
+  if (meta.sol) h += `<div><b>Una soluzione possibile:</b></div><pre class="code">${hl(p.solution)}</pre>`;
+  h += `<div class="row">`;
+  if (!meta.hint) h += `<button class="btn" id="hint-btn">Mostra suggerimento</button>`;
+  if (!meta.sol) h += `<button class="btn ghost" id="sol-btn" ${canSol ? "" : "disabled"}>Mostra soluzione</button>`;
+  else h += `<button class="btn ghost" id="sol-ins">Copia la soluzione nell'editor</button>`;
+  h += `</div>`;
+  h += meta.sol ? `<p class="note">Prova a riscriverla con parole tue: capirla vale più che copiarla.</p>`
+    : `<p class="note">${canSol ? "Guardare la soluzione vale al massimo 1 stella." : `La soluzione si sblocca dopo 3 consegne sbagliate (${meta.fails}/3). Il suggerimento costa una stella.`}</p>`;
+  box.innerHTML = h;
+  const hb = $("#hint-btn"); if (hb) hb.onclick = () => { sfx.play("hint"); meta.hint = true; save(); renderHint(); };
+  const sb = $("#sol-btn"); if (sb) sb.onclick = () => { sfx.play("hint"); meta.sol = true; save(); renderHint(); };
+  const si = $("#sol-ins"); if (si) si.onclick = () => { editor.value = p.solution; state.code[p.id] = p.solution; save(); };
+}
+
+async function runOnly(){
+  if (running) return; running = true;
+  const con = $("#console");
+  con.innerHTML = `<span class="muted">Esecuzione…</span>`;
+  sfx.play("run");
+  say("Sto eseguendo il tuo programma… bip bop…", "think");
+  const stdin = $("#stdin");
+  const r = await runPython(editor.value, stdin ? stdin.value.split("\n") : []);
+  renderConsole(con, r);
+  const box = $("#results");
+  box.innerHTML = r.error ? `<div class="res bad"><span class="ic">!</span><span>${friendly(r.error)}</span></div>` : "";
+  if (r.inputShort) box.innerHTML += `<div class="res bad"><span class="ic">i</span><span>Il programma ha chiesto più input di quelli nel riquadro «Input simulato»: aggiungi altre righe.</span></div>`;
+  if (r.error) say(`Mi sono bloccato con un <b>${esc(r.error.name)}</b>${r.error.line ? " alla riga " + r.error.line : ""}. Leggi la spiegazione sotto il terminale.`, "sad");
+  else say("Ecco cosa ho stampato nel terminale. Se ti sembra giusto, premi <b>Consegna</b>!", null);
+  running = false;
+}
+
+async function submit(){
+  if (running) return; running = true;
+  const p = LEVELS[curLevel].problems[curProb], meta = state.meta[p.id], code = editor.value;
+  const con = $("#console"), box = $("#results");
+  const btn = $("#submit-btn"); btn.disabled = true;
+  box.innerHTML = ""; con.innerHTML = `<span class="muted">Pyto sta controllando…</span>`;
+  say("Controllo il programma con varie prove…", "think");
+  const items = []; let ok = true;
+
+  for (const [pat, msg] of (p.require || [])) if (!new RegExp(pat).test(code)) { ok = false; items.push(["bad", msg]); }
+  for (const [s, msg] of (p.forbid || [])) if (code.includes(s)) { ok = false; items.push(["bad", msg]); }
+
+  if (ok) {
+    const runs = p.runs || [{ inputs:[] }];
+    for (let k = 0; k < runs.length; k++) {
+      const run = runs[k];
+      const r = await runPython(code, run.inputs || [], k === 0 ? (p.tests || "") : "");
+      const note = run.inputs && run.inputs.length ? `Prova ${k + 1} — input: ${run.inputs.join(", ")}` : "";
+      if (k === 0) renderConsole(con, r, note);
+      const label = run.inputs && run.inputs.length ? `Prova ${k + 1} (input: <code>${esc(run.inputs.join(", "))}</code>)` : `Output del programma`;
+      if (r.error && r.phase === "student") {
+        ok = false;
+        if (k > 0) renderConsole(con, r, note);
+        items.push(["bad", `${label}: il programma si è fermato con <b>${esc(r.error.name)}</b>${r.error.line ? " alla riga " + r.error.line : ""}.`, friendly(r.error)]);
+        break;
+      }
+      if (run.out !== undefined) {
+        if (norm(r.out) === norm(run.out)) items.push(["ok", `${label}: output corretto.`]);
+        else {
+          ok = false;
+          const d = firstDiff(r.out, run.out);
+          if (k > 0) renderConsole(con, r, note);
+          items.push(["bad", `${label}: l'output non è quello atteso${d ? ` (riga ${d.line})` : ""}.`, null,
+            d ? `<span>Atteso:&nbsp;&nbsp; ${esc(d.exp)}</span><span>Ottenuto: ${esc(d.got)}</span>` : ""]);
+          if (r.inputShort) items.push(["bad", "Il programma ha chiesto più input del previsto: controlla quante volte usi input()."]);
+        }
+      }
+      if (k === 0 && p.tests) {
+        if (r.error && r.phase === "test") {
+          ok = false;
+          const msg = r.error.name === "AssertionError" ? esc(r.error.msg) : r.error.name === "NameError" ? `Non trovo un nome che serve: ${esc(r.error.msg)}. Hai usato esattamente il nome richiesto?` : `Durante il controllo: ${esc(r.error.name)}: ${esc(r.error.msg)}`;
+          items.push(["bad", "Controllo dei valori: " + msg]);
+        } else if (!r.error) items.push(["ok", "Controllo dei valori e delle funzioni: tutto giusto."]);
+      }
+    }
+  }
+
+  let html = "";
+  for (const [cls, main, more, diff] of items) html += `<div class="res ${cls}"><span class="ic">${cls === "ok" ? "✓" : "✗"}</span><span>${main}</span>${more ? `<span class="more">${more}</span>` : ""}${diff ? `<span class="diff">${diff}</span>` : ""}</div>`;
+  box.innerHTML = html;
+  btn.disabled = false; running = false;
+
+  sfx.play(ok ? "ok" : "bad");
+  if (ok) {
+    say(pick(["Bip bip! Funziona tutto!", "I miei circuiti approvano: è giusto!", "Perfetto! Sei un vero programmatore."]), "happy");
+    const stars = meta.sol ? 1 : (meta.fails === 0 && !meta.hint) ? 3 : (meta.fails <= 2) ? 2 : 1;
+    complete(p, stars);
+  } else {
+    meta.fails++; save(); renderHint();
+    say(pick(["Ahia, qualcosa non torna. Guarda i dettagli sotto il terminale: sono indizi preziosi!", "Quasi! Leggi cosa non va qui sotto e riprova.", "Non ancora… ma ogni errore ti avvicina alla soluzione."]) + (meta.fails >= 3 && !meta.hint ? " Forse ti serve un <b>suggerimento</b>?" : ""), "sad");
+  }
+}
+
+function answerQuiz(j){
+  const p = LEVELS[curLevel].problems[curProb], meta = state.meta[p.id];
+  if (state.done[p.id]) return;
+  const btns = document.querySelectorAll("#quiz .opt");
+  sfx.play(j === p.answer ? "ok" : "bad");
+  if (j === p.answer) {
+    revealQuiz(true);
+    say(pick(["Esatto! Hai letto il codice come un computer.", "Giusto! Neanche io avrei saputo fare meglio."]), "happy");
+    complete(p, Math.max(1, 3 - meta.wrong.length));
+  } else {
+    meta.wrong.push(j); save();
+    btns[j].classList.add("wrong"); btns[j].disabled = true;
+    say("Mmm, no… Rileggi il codice riga per riga, come farebbe Python.", "sad");
+  }
+}
+function revealQuiz(fresh){
+  const p = LEVELS[curLevel].problems[curProb];
+  document.querySelectorAll("#quiz .opt").forEach((b, i) => { b.disabled = true; if (i === p.answer) { b.classList.add("right"); b.classList.remove("wrong"); } });
+  $("#quiz-explain").innerHTML = `<div class="explain"><span class="label">${fresh ? "Giusto! Ecco perché" : "Spiegazione"}</span><p>${p.explain}</p></div>`;
+}
+
+/* ---- completamento ---- */
+let afterModal = null;
+function complete(p, stars){
+  const l = LEVELS[curLevel];
+  const prev = state.done[p.id];
+  const rankOf = v => RANKS.filter(r => v >= r[0]).pop()[1];
+  const rankBefore = rankOf(totalXP());
+  const xp = Math.round(p.xp * (stars === 3 ? 1 : stars === 2 ? .8 : .5));
+  if (!prev || stars > prev.stars) state.done[p.id] = { stars, xp };
+  let gained = prev ? Math.max(0, xp - prev.xp) : xp;
+  const planetNow = levelDone(l) && !state.levels[l.id];
+  if (planetNow) { state.levels[l.id] = true; gained += LEVEL_BONUS; }
+  save(); renderHeader(); renderProbTabs();
+  registro.sync();
+  const nStars = planetNow ? levelStars(l) : stars;
+  for (let s = 0; s < nStars; s++) sfx.play("star", .45 + s * .18);
+  let tail = .45 + nStars * .18 + .2;
+  if (planetNow) { sfx.play("planet", tail); sfx.play("fireworks", tail + 2.4); tail += 6; }
+  if (rankOf(totalXP()) !== rankBefore) sfx.play("levelup", tail);
+
+  const last = curLevel === LEVELS.length - 1;
+  $("#modal-stars").innerHTML = starsHTML(planetNow ? levelStars(l) : stars);
+  $("#modal-gain").textContent = gained ? `+${gained} XP` : "Problema già risolto";
+  setPyto($("#modal-pyto"), "happy");
+  if (planetNow) {
+    $("#modal-title").textContent = `${l.planet} liberato!`;
+    $("#modal-part").innerHTML = `<div class="part-reward">${PART_ICON}<span>Hai recuperato ${esc(l.part)}! Pezzi del razzo: ${Object.keys(state.levels).length}/${LEVELS.length}</span></div>`;
+    $("#modal-msg").textContent = last || currentIndex() === -1 ? "Il razzo è completo. Si torna a casa!" : `Prossima tappa: ${LEVELS[curLevel + 1].planet}.`;
+    $("#modal-next").textContent = currentIndex() === -1 ? "Guarda il decollo →" : "Vai alla mappa →";
+    afterModal = currentIndex() === -1 ? openDiploma : () => { renderMap(); show("map"); };
+    confetti();
+  } else {
+    $("#modal-title").textContent = ({3:"Perfetto!", 2:"Ottimo!", 1:"Fatto!"})[stars];
+    $("#modal-part").innerHTML = "";
+    const msgs = { 3:"Al primo colpo e senza aiuti!", 2:"Qualche tentativo in più, ma ci sei arrivato.", 1:"Risolto! Più avanti puoi riprovarlo per prendere tutte le stelle." };
+    const nextK = l.problems.findIndex(q => !state.done[q.id]);
+    $("#modal-msg").textContent = msgs[stars] + (nextK !== -1 ? ` Mancano ${3 - probsDone(l)} problemi per liberare ${l.planet}.` : "");
+    if (nextK !== -1) { $("#modal-next").textContent = "Prossimo problema →"; afterModal = () => openProblem(nextK); }
+    else { $("#modal-next").textContent = "Vai alla mappa →"; afterModal = () => { renderMap(); show("map"); }; }
+  }
+  $("#overlay").hidden = false;
+  $("#modal-next").focus();
+}
+function closeModal(){ $("#overlay").hidden = true; }
+$("#modal-stay").onclick = closeModal;
+$("#modal-next").onclick = () => { closeModal(); afterModal && afterModal(); };
+$("#overlay").addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+/* ---- diploma ---- */
+function openDiploma(){
+  const xp = totalXP(), st = totalStars(), nParts = Object.keys(state.levels).length;
+  const all = nParts === LEVELS.length;
+  if (all) { sfx.play("launch", .5); sfx.play("fireworks", 4.3); }
+  const d = new Date().toLocaleDateString("it-IT", { day:"numeric", month:"long", year:"numeric" });
+  $("#launch-slot").innerHTML = all ? `<div class="launch" aria-hidden="true"><div class="ship">${ROCKET}</div><div class="ground"></div></div>` : "";
+  $("#diploma").innerHTML = all ? `
+    <span class="eyebrow">Attestato di volo spaziale</span>
+    <span class="who">${esc(state.name || "Pilota anonimo")}</span>
+    <h2>ha completato la Missione Python</h2>
+    <p style="color:var(--ink-2); font-weight:700">riparando il razzo di Pyto su 6 pianeti: print, variabili, conti, input, condizioni e cicli.</p>
+    <div class="facts"><span><b>${xp}</b>punti XP</span><span><b>${st}/${ALL_PROBS.length * 3}</b>stelle</span><span><b>${RANKS.filter(r => xp >= r[0]).pop()[1]}</b>grado</span></div>
+    <span style="color:var(--ink-2); font-weight:700">${d}</span>` : `
+    <span class="eyebrow">ancora un po'…</span>
+    <h2>Il decollo si sblocca alla fine</h2>
+    <p style="color:var(--ink-2)">Hai recuperato ${nParts} pezzi del razzo su ${LEVELS.length}. Continua la missione!</p>`;
+  show("diploma");
+}
+
+/* ======================= LABORATORIO ======================= */
+let lab = null;
+function openLab(){
+  if (!lab) {
+    lab = createEditor($("#lab-editor"), "lab-code", () => runLab());
+    let saved = null; try { saved = localStorage.getItem(KEY + "-lab"); } catch(e) {}
+    lab.value = saved ?? SNIPPETS.tab;
+    if (saved === null) $("#lab-stdin").value = "9";
+    let t; lab.onChange(v => { clearTimeout(t); t = setTimeout(() => { try { localStorage.setItem(KEY + "-lab", v); } catch(e) {} }, 300); });
+  }
+  show("lab");
+}
+async function runLab(){
+  if (running) return; running = true;
+  const con = $("#lab-console"); con.innerHTML = `<span class="muted">Esecuzione…</span>`;
+  sfx.play("run");
+  setPyto($("#lab-pyto"), "think");
+  const r = await runPython(lab.value, $("#lab-stdin").value.split("\n"));
+  renderConsole(con, r);
+  if (r.error) con.innerHTML += `\n<span class="muted">${friendly(r.error).replace(/<[^>]+>/g, "")}</span>`;
+  setPyto($("#lab-pyto"), r.error ? "sad" : "happy");
+  running = false;
+}
+$("#lab-run").onclick = runLab;
+$("#lab-clear").onclick = () => { lab.value = ""; lab.focus(); };
+document.querySelectorAll("[data-snip]").forEach(b => b.addEventListener("click", () => {
+  lab.value = SNIPPETS[b.dataset.snip];
+  const defaults = { tab:"9", dado:"5", stringhe:"Python è il mio linguaggio preferito", dizionario:"Sara" };
+  $("#lab-stdin").value = defaults[b.dataset.snip] || "";
+  try { localStorage.setItem(KEY + "-lab", lab.value); } catch(e) {}
+}));
+
+/* ======================= SUONI ======================= */
+const sfx = (() => {
+  let ctx = null, on = true;
+  try { on = localStorage.getItem(KEY + "-sound") !== "off"; } catch(e) {}
+  function unlock(){
+    if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; try { ctx = new AC(); } catch(e) { return; } }
+    if (ctx.state === "suspended") ctx.resume().catch(() => {});
+  }
+  function tone(freq, start, dur, type, vol, slideTo){
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, start);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, start + dur);
+    g.gain.setValueAtTime(0.0001, start);
+    g.gain.exponentialRampToValueAtTime(vol, start + .02);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(start); o.stop(start + dur + .05);
+  }
+  let noiseBuf = null;
+  function ensureBuf(){
+    if (!noiseBuf) {
+      noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+  }
+  function noise(start, dur, vol, fFrom, fTo){
+    ensureBuf();
+    const src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    src.buffer = noiseBuf; src.loop = true;
+    f.type = "lowpass"; f.frequency.setValueAtTime(fFrom, start);
+    if (fTo) f.frequency.exponentialRampToValueAtTime(fTo, start + dur);
+    g.gain.setValueAtTime(0.0001, start);
+    g.gain.exponentialRampToValueAtTime(vol, start + .15);
+    g.gain.setValueAtTime(vol, start + dur * .7);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+    src.connect(f); f.connect(g); g.connect(ctx.destination);
+    src.start(start); src.stop(start + dur + .05);
+  }
+  /* scoppio: rumore con attacco secco e coda che si spegne */
+  function burst(start, dur, vol, fFrom, fTo){
+    ensureBuf();
+    const src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    src.buffer = noiseBuf; src.loop = true;
+    f.type = "lowpass"; f.frequency.setValueAtTime(fFrom, start); f.frequency.exponentialRampToValueAtTime(fTo, start + dur);
+    g.gain.setValueAtTime(0.0001, start);
+    g.gain.exponentialRampToValueAtTime(vol, start + .012);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+    src.connect(f); f.connect(g); g.connect(ctx.destination);
+    src.start(start); src.stop(start + dur + .05);
+  }
+  /* un fuoco d'artificio: fischio che sale, BUM, scintille */
+  function firework(s){
+    const up = .45 + Math.random() * .25;
+    tone(500 + Math.random() * 300, s, up, "sine", .025, 1800 + Math.random() * 900);
+    burst(s + up, 1.1, .32, 3500, 120);
+    tone(60, s + up, .35, "triangle", .12, 35);
+    for (let i = 0; i < 14; i++) tone(2200 + Math.random() * 3200, s + up + .15 + Math.random() * .9, .025, "square", .018);
+  }
+  const seq = (t, notes, type, vol, step) => notes.forEach((f, i) => f && tone(f, t + i * step, step * 1.1, type, vol));
+  const SOUNDS = {
+    /* clic sui pulsanti: blip corto */
+    click: t => tone(660, t, .05, "square", .035, 990),
+    /* entrata in un pianeta: salto nell'iperspazio */
+    warp: t => { tone(180, t, .4, "square", .04, 1400); tone(90, t, .4, "triangle", .06, 700); },
+    /* Esegui: bip bop del computer */
+    run: t => seq(t, [880, 1320, 990, 1480], "square", .035, .06),
+    /* risposta giusta */
+    ok: t => { seq(t, [523.25, 659.25, 783.99, 1046.5], "square", .05, .07); tone(1046.5, t + .28, .25, "triangle", .08); },
+    /* risposta sbagliata */
+    bad: t => { tone(220, t, .18, "square", .06, 180); tone(160, t + .17, .34, "square", .06, 105); },
+    /* ogni stella del premio: moneta */
+    star: t => { tone(987.77, t, .08, "square", .06); tone(1318.5, t + .07, .3, "square", .06); },
+    /* suggerimento / soluzione: suono magico */
+    hint: t => seq(t, [1046.5, 1318.5, 1568, 2093, 1568, 2093], "triangle", .07, .045),
+    /* pianeta liberato: fanfara */
+    planet: t => {
+      [[523.25,0,.14],[523.25,.14,.14],[523.25,.28,.14],[523.25,.42,.3],[415.3,.78,.3],[466.16,1.1,.3],[523.25,1.42,.16],[466.16,1.6,.1],[523.25,1.72,.8]]
+        .forEach(([f, d, l]) => tone(f, t + d, l, "square", .06));
+      [[130.81,0],[130.81,.42],[103.83,.78],[116.54,1.1],[130.81,1.42]].forEach(([f, d]) => tone(f, t + d, .3, "triangle", .12));
+      tone(261.63, t + 1.72, .8, "triangle", .12);
+    },
+    /* nuovo grado: power-up che sale */
+    levelup: t => { seq(t, [392, 523.25, 659.25, 783.99, 1046.5, 1318.5, 1568], "square", .045, .06); tone(2093, t + .42, .5, "triangle", .08); },
+    /* decollo del razzo */
+    /* vittoria: fuochi d'artificio (6 razzi uno dopo l'altro) */
+    fireworks: t => { for (let k = 0; k < 6; k++) firework(t + k * .5 + Math.random() * .2); },
+    launch: t => { noise(t, 3.6, .22, 300, 3000); tone(70, t, 3.2, "sawtooth", .05, 600); seq(t + 3.3, [783.99, 1046.5, 1318.5, 1568], "square", .05, .1); },
+  };
+  const btn = $("#sound-btn");
+  function paintBtn(){
+    btn.setAttribute("aria-pressed", String(on));
+    btn.setAttribute("aria-label", on ? "Suoni attivi: clicca per disattivarli" : "Suoni disattivati: clicca per attivarli");
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/>${on ? '<path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>' : '<path d="M17 9l5 6M22 9l-5 6"/>'}</svg>`;
+  }
+  btn.addEventListener("click", () => {
+    on = !on; paintBtn();
+    try { localStorage.setItem(KEY + "-sound", on ? "on" : "off"); } catch(e) {}
+    if (on) { unlock(); SOUNDS.ok(ctx ? ctx.currentTime + .01 : 0); }
+  });
+  paintBtn();
+  addEventListener("pointerdown", unlock, { once:true });
+  addEventListener("keydown", unlock, { once:true });
+  return { play(name, delay = 0){ if (!on) return; unlock(); if (!ctx) return; try { SOUNDS[name](ctx.currentTime + .01 + delay); } catch(e) {} } };
+})();
+
+/* clic su tutti i pulsanti (tranne quelli che hanno già un suono loro) */
+const OWN_SOUND = "#run-btn, #submit-btn, #lab-run, .opt, .pl, #continue-btn, #hint-btn, #sol-btn, #sound-btn, #banner-dip";
+document.addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if (b && !b.disabled && !b.matches(OWN_SOUND)) sfx.play("click");
+});
+
+/* ======================= REGISTRO DELLA CLASSE ======================= */
+const registro = (() => {
+  let db = null, user = null, myId = null, canAdmin = false, readOnly = false, available = null;
+  let rows = [], lastSent = "", firstDone = false, writing = false, again = false, timer = null, armedDel = null, renderToken = 0;
+  const fmt = new Intl.DateTimeFormat("it-IT", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" });
+
+  function summary(){
+    return {
+      nome: (state.name || "").trim().slice(0, 40),
+      classe: (state.classe || "").trim().toUpperCase().slice(0, 8),
+      xp: totalXP(), stelle: totalStars(),
+      pianeti: Object.keys(state.levels).length,
+      problemi: Object.keys(state.done).length,
+      progresso: LEVELS.map(l => probsDone(l)),
+    };
+  }
+  const keyOf = s => JSON.stringify([s.nome, s.classe, s.xp, s.stelle, s.pianeti, s.problemi, s.progresso]);
+
+  function tryInit(n){
+    if (window.claude && typeof window.claude.use === "function") init();
+    else if (n < 24) setTimeout(() => tryInit(n + 1), 250);
+    else unavailable();
+  }
+  async function init(){
+    try { [db, user] = await Promise.all([claude.use("db"), claude.use("user")]); } catch(e) { db = null; }
+    if (!db) { unavailable(); return; }
+    available = true;
+    if (user) { myId = await user.id(); canAdmin = await user.canEdit(); }
+    if (!myId) readOnly = true;
+    db.collection("registro").onSnapshot(snap => {
+      rows = snap.docs.filter(d => d.exists).map(d => Object.assign({ id:d.id }, d.data()));
+      if (!firstDone) {
+        firstDone = true;
+        const mine = rows.find(r => r.id === myId);
+        if (mine) lastSent = keyOf(mine);
+        sync(true);
+      }
+      render();
+    }, err => {
+      if (err && err.code === "revoked") { unavailable(); return; }
+      $("#reg-note").textContent = "Il registro non si aggiorna in questo momento. Ricarica la pagina tra poco.";
+    });
+  }
+  function unavailable(){
+    available = false;
+    $("#reg-me").hidden = true; $("#reg-tools").hidden = true; $("#reg-summary").innerHTML = "";
+    $("#reg-list").innerHTML = `<p class="reg-empty">Il registro della classe funziona quando il gioco è aperto dal link di Claude con l'account della scuola.<br>Qui i progressi restano salvati solo su questo computer.</p>`;
+    $("#reg-note").textContent = "";
+  }
+
+  function sync(immediate){
+    if (!db || !myId || readOnly) return;
+    clearTimeout(timer);
+    timer = setTimeout(write, immediate ? 0 : 900);
+  }
+  async function write(){
+    if (writing) { again = true; return; }
+    const s = summary();
+    if (!s.problemi && !s.nome && !rows.some(r => r.id === myId)) return;
+    const k = keyOf(s);
+    if (k === lastSent) return;
+    writing = true;
+    try {
+      await db.doc("registro/" + myId).set(Object.assign({}, s, { aggiornato: new Date().toISOString() }));
+      lastSent = k;
+      $("#reg-saved").textContent = "Salvato nel registro ✓";
+    } catch (e) {
+      if (e && e.code === "invalid_argument") { readOnly = true; $("#reg-saved").textContent = ""; $("#reg-note").textContent = "Puoi vedere il registro, ma non hai il permesso di scriverci: chiedi al docente di darti l'accesso «può interagire»."; }
+      else if (e && e.code === "quota_exceeded") $("#reg-note").textContent = "Il registro è pieno: il docente deve rimuovere qualche riga vecchia.";
+    }
+    writing = false;
+    if (again) { again = false; write(); }
+  }
+
+  async function render(){
+    if (available !== true) return;
+    const tok = ++renderToken;
+    const classes = [...new Set(rows.map(r => r.classe).filter(Boolean))].sort();
+    const sel = $("#reg-filter"), cur = sel.value;
+    sel.innerHTML = `<option value="">Tutte</option>` + classes.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+    sel.value = classes.includes(cur) ? cur : "";
+    const filter = sel.value, sort = $("#reg-sort").value;
+    let list = rows.filter(r => !filter || r.classe === filter);
+    const ps = user && list.length ? await user.profiles(list.map(r => r.id)) : {};
+    if (tok !== renderToken) return;
+    const nameOf = r => r.nome || (ps[r.id] && ps[r.id].name) || "Pilota senza nome";
+    const cmp = {
+      xp: (a, b) => (b.xp || 0) - (a.xp || 0) || (b.stelle || 0) - (a.stelle || 0),
+      stelle: (a, b) => (b.stelle || 0) - (a.stelle || 0) || (b.xp || 0) - (a.xp || 0),
+      nome: (a, b) => nameOf(a).localeCompare(nameOf(b), "it"),
+      when: (a, b) => String(b.aggiornato || "").localeCompare(String(a.aggiornato || "")),
+    }[sort];
+    list = list.slice().sort(cmp);
+
+    const n = list.length;
+    const avg = n ? (list.reduce((s, r) => s + (r.pianeti || 0), 0) / n) : 0;
+    const full = list.filter(r => (r.pianeti || 0) >= LEVELS.length).length;
+    $("#reg-summary").innerHTML = `<div><b>${n}</b><span>piloti${filter ? " in " + esc(filter) : ""}</span></div><div><b>${avg.toFixed(1).replace(".", ",")}</b><span>pianeti liberati in media</span></div><div><b>${full}</b><span>missioni completate</span></div>`;
+
+    if (!n) { $("#reg-list").innerHTML = `<p class="reg-empty">Nessun pilota ancora${filter ? " in questa classe" : ""}. Chi risolve il primo problema compare qui.</p>`; }
+    else {
+      let h = `<table class="reg-table"><thead><tr><th>#</th><th>Pilota</th><th>Classe</th><th>Pianeti</th><th>Stelle</th><th>XP</th><th>Ultima attività</th>${canAdmin ? "<th><span class=\"sr\">Azioni</span></th>" : ""}</tr></thead><tbody>`;
+      list.forEach((r, i) => {
+        const prog = Array.isArray(r.progresso) ? r.progresso : [];
+        const dots = LEVELS.map((l, j) => { const v = prog[j] || 0; return `<i class="${v >= 3 ? "on" : v > 0 ? "part" : ""}" style="--c:${l.c[0]}" title="${esc(l.planet)}: ${v}/3"></i>`; }).join("");
+        const d = r.aggiornato ? new Date(r.aggiornato) : null;
+        const avatar = ps[r.id] ? `<img src="${esc(ps[r.id].avatarUrl)}" alt="">` : "";
+        h += `<tr class="${r.id === myId ? "me" : ""}">
+          <td class="pos">${sort === "xp" || sort === "stelle" ? i + 1 : "·"}</td>
+          <td><span class="who">${avatar}<span>${esc(nameOf(r))}${r.id === myId ? '<span class="you">tu</span>' : ""}</span></span></td>
+          <td class="cls">${esc(r.classe || "—")}</td>
+          <td><span class="planet-dots" aria-label="${r.pianeti || 0} pianeti su ${LEVELS.length}">${dots}</span></td>
+          <td style="color:var(--yellow)">★ ${r.stelle || 0}</td>
+          <td>${r.xp || 0}</td>
+          <td class="when">${d && !isNaN(d) ? fmt.format(d) : "—"}</td>
+          ${canAdmin ? `<td><button class="btn ghost del" data-del="${esc(r.id)}">${armedDel === r.id ? "Confermi?" : "Rimuovi"}</button></td>` : ""}
+        </tr>`;
+      });
+      $("#reg-list").innerHTML = h + "</tbody></table>";
+      $("#reg-list").querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", async () => {
+        const id = b.dataset.del;
+        if (armedDel !== id) { armedDel = id; render(); setTimeout(() => { if (armedDel === id) { armedDel = null; render(); } }, 4000); return; }
+        armedDel = null;
+        try { await db.doc("registro/" + id).delete(); if (id === myId) lastSent = ""; } catch(e) { $("#reg-note").textContent = "Non è stato possibile rimuovere la riga: riprova."; }
+      }));
+    }
+    $("#reg-note").textContent = readOnly && myId ? $("#reg-note").textContent
+      : canAdmin ? "Come docente puoi rimuovere le righe (ad esempio quelle di prova). Ogni studente compare con il nome che ha scritto."
+      : "Scrivi nome, cognome e classe veri, così il docente ti riconosce. La tua riga si aggiorna da sola.";
+  }
+
+  $("#reg-filter").addEventListener("change", render);
+  $("#reg-sort").addEventListener("change", render);
+  tryInit(0);
+  return { sync, render };
+})();
+
+/* ======================= NAVIGAZIONE & IMPOSTAZIONI ======================= */
+$("#nav-reg").onclick = () => { show("reg"); registro.render(); };
+const regName = $("#reg-name"), regClass = $("#reg-class");
+regName.value = state.name || ""; regClass.value = state.classe || "";
+regName.addEventListener("input", () => { state.name = regName.value.trim(); nameIn.value = regName.value; save(); $("#reg-saved").textContent = ""; registro.sync(); });
+regClass.addEventListener("input", () => { state.classe = regClass.value.trim().toUpperCase(); save(); $("#reg-saved").textContent = ""; registro.sync(); });
+const goMap = () => { show("map"); renderMap(); };
+$("#go-home").onclick = goMap; $("#nav-map").onclick = goMap; $("#back-map").onclick = goMap; $("#dip-back").onclick = goMap;
+$("#nav-lab").onclick = openLab; $("#hero-lab").onclick = openLab;
+
+const nameIn = $("#player-name");
+nameIn.value = state.name || "";
+nameIn.addEventListener("input", () => { state.name = nameIn.value.trim(); regName.value = nameIn.value; save(); registro.sync(); });
+
+const tm = $("#teacher-mode");
+tm.checked = !!state.teacher;
+tm.addEventListener("change", () => {
+  state.teacher = tm.checked; save();
+  if (!$("#view-map").hidden) renderMap(); else if (!$("#view-level").hidden) openProblem(curProb);
+});
+
+let resetArmed = false, resetTimer;
+$("#reset-btn").onclick = () => {
+  const b = $("#reset-btn");
+  if (!resetArmed) { resetArmed = true; b.textContent = "Sicuro? Clicca di nuovo per cancellare tutto"; b.style.color = "var(--err)"; resetTimer = setTimeout(() => { resetArmed = false; b.textContent = "Azzera progressi"; b.style.color = ""; }, 4000); return; }
+  clearTimeout(resetTimer); resetArmed = false; b.textContent = "Azzera progressi"; b.style.color = "";
+  state = { name:state.name, classe:state.classe, done:{}, levels:{}, code:{}, meta:{}, teacher:state.teacher }; save();
+  registro.sync();
+  goMap();
+};
+
+renderMap();
+</script>
+
+</body></html>
